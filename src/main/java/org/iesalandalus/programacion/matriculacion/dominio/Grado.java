@@ -1,25 +1,26 @@
 package org.iesalandalus.programacion.matriculacion.dominio;
 
-public enum Curso {
+public enum Grado {
 
-    PRIMERO("PRIMERO"), SEGUNDO("SEGUNDO");
+    GDCFGB("GDCFGB"),
+    GDCFGM("GDCFGM"),
+    GDCFGS("GDCFGS");
 
     String cadenaAMostrar;
 
-     private Curso(String cadenaAMostrar) {
+    private Grado(String cadenaAMostrar) {
         this.cadenaAMostrar = cadenaAMostrar;
     }
 
     public String imprimir (){
+      int digito=0;
 
-        int digito=0;
-
-        return digito + ".-"+cadenaAMostrar;
+     return digito + ".-"+cadenaAMostrar;
     }
 
     @Override
     public String toString() {
-        return "Curso{" +
+        return "Grado{" +
                 "cadenaAMostrar='" + cadenaAMostrar + '\'' +
                 '}';
     }
