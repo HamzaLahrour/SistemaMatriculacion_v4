@@ -101,11 +101,19 @@ public class CicloFormativo {
     }
 
     public CicloFormativo(int codigo, String familiaProfesional, Grado grado, String nombre, int horas) {
-        this.setCodigo(codigo);
-        this.setFamiliaProfesional(familiaProfesional);
-        this.setGrado(grado);
-        this.setNombre(nombre);
-        this.setHoras(horas);
+
+        setCodigo(codigo);
+        setFamiliaProfesional(familiaProfesional);
+        setGrado(grado);
+        setNombre(nombre);
+        setHoras(horas);
+
+
+        this.codigo=codigo;
+        this.familiaProfesional=familiaProfesional;
+        this.grado=grado;
+        this.nombre=nombre;
+        this.horas=horas;
     }
 
     public CicloFormativo(CicloFormativo cicloFormativo){

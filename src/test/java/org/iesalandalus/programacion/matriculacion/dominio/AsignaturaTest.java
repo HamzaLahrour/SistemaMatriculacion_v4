@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AsignaturaTest {
 
+
+
     private static final String ERROR_EXCEPCION = "Debería haber saltado la excepción.";
     private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
     private static final int CODIGO_CF=1225;
@@ -252,6 +254,11 @@ public class AsignaturaTest {
 
         assertEquals(cadenaEsperada, asignatura.imprimir());
 
+
+
+
     }
+
+
 
 }

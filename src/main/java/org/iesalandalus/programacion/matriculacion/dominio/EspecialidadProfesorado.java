@@ -15,9 +15,7 @@ public enum EspecialidadProfesorado {
 
     public String imprimir (){
 
-        int digito=0;
-
-        return digito + ".-"+cadenaAMostrar;
+        return ordinal() + " .- "+cadenaAMostrar;
     }
 
     @Override

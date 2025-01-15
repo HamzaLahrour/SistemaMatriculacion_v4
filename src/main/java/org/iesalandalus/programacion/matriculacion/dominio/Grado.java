@@ -2,9 +2,9 @@ package org.iesalandalus.programacion.matriculacion.dominio;
 
 public enum Grado {
 
-    GDCFGB("GDCFGB"),
-    GDCFGM("GDCFGM"),
-    GDCFGS("GDCFGS");
+    GDCFGB("Grado D Ciclo Formativo de Grado Básico"),
+    GDCFGM(" Grado D Ciclo formativo de Grado Medio"),
+    GDCFGS("Grado D Ciclo Formativo de Grado Superior");
 
     String cadenaAMostrar;
 
@@ -13,9 +13,8 @@ public enum Grado {
     }
 
     public String imprimir (){
-      int digito=0;
 
-     return digito + ".-"+cadenaAMostrar;
+     return this.ordinal() + ".- "+ cadenaAMostrar;
     }
 
     @Override
