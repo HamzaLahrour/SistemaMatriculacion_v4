@@ -1,5 +1,8 @@
 package org.iesalandalus.programacion.matriculacion.negocio;
 
+import org.iesalandalus.programacion.matriculacion.dominio.Alumno;
+import org.iesalandalus.programacion.matriculacion.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.dominio.Matricula;
 
 import javax.naming.OperationNotSupportedException;
@@ -42,6 +45,11 @@ public class Matriculas {
     }
 
     public Matricula [] get ()throws OperationNotSupportedException{
+
+        if (copiaProfundaMatriculas().length==0){
+            throw new IllegalArgumentException("ERROR: No hay matriculas registradas.");
+        }
+
         return copiaProfundaMatriculas();
     }
 
@@ -102,6 +110,107 @@ public class Matriculas {
         }
         throw new OperationNotSupportedException("ERROR: No existe ninguna matrícula como la indicada.");
     }
+
+    public Matricula [] get (Alumno alumno){
+
+        int contador=0;
+
+        for (int i=0;i<tamano;i++){
+
+            if (coleccionMatriculas[i].getAlumno().equals(alumno)){
+                contador++;
+            }
+
+        }
+
+        if (contador==0){
+            throw new IllegalArgumentException("ERROR: El alumno introducido no está matriculado.");
+        }
+
+        Matricula [] matriculasAlumno = new Matricula[contador];
+        int indice=0;
+
+        for (int i=0; i<tamano;i++){
+
+            if (coleccionMatriculas[i].getAlumno().equals(alumno)){
+                matriculasAlumno[indice++]=coleccionMatriculas[i];
+            }
+        }
+
+        return matriculasAlumno;
+
+    }
+
+    public Matricula [] get (String cursoAcademico){
+
+        int contador=0;
+
+        for (int i=0;i<tamano;i++){
+            if (coleccionMatriculas[i].getCursoAcademico().equals(cursoAcademico)){
+                contador++;
+            }
+        }
+
+        if (contador==0){
+            throw new IllegalArgumentException("ERROR: No hay matriculas con el curso academico introducido.");
+        }
+
+        Matricula [] matriculasCursoAcademico = new Matricula[contador];
+        int indice=0;
+
+        for (int i=0;i<tamano;i++){
+
+            if (coleccionMatriculas[i].getCursoAcademico().equals(cursoAcademico)){
+                matriculasCursoAcademico[indice]=coleccionMatriculas[i];
+                indice++;
+            }
+        }
+
+        return matriculasCursoAcademico;
+    }
+
+
+    public Matricula [] get (CicloFormativo cicloFormativo){
+
+        int contador=0;
+
+        for (int i=0;i<tamano;i++){
+            Asignatura [] asignaturasPrueba = coleccionMatriculas[i].getColeccionAsignaturas();
+
+            for (Asignatura asignatura : asignaturasPrueba){
+
+                if (asignatura.getCicloFormativo().equals(cicloFormativo)){
+                    contador++;
+                }
+            }
+        }
+
+        if (contador==0){
+            throw new IllegalArgumentException("ERROR: No existe ninguna matricula con el ciclo formativo introducido.");
+        }
+
+        Matricula [] matriculasPorCicloFormativo = new Matricula[contador];
+        int indice=0;
+
+        for (int i=0;i<tamano;i++){
+
+            Asignatura [] asignaturasPrueba= coleccionMatriculas[i].getColeccionAsignaturas();
+
+            for (Asignatura asignatura : asignaturasPrueba){
+
+                if (asignatura.getCicloFormativo().equals(cicloFormativo)){
+
+                    matriculasPorCicloFormativo[indice++]=coleccionMatriculas[i];
+
+                }
+
+            }
+
+        }
+
+        return matriculasPorCicloFormativo;
+    }
+
 
 
 

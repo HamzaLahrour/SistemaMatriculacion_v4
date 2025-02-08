@@ -44,6 +44,11 @@ public class Asignaturas {
     }
 
     public Asignatura[] get (){
+
+        if (copiaProfundaAsignaturas().length==0){
+            throw new IllegalArgumentException("ERROR: No se encuentran asignaturas matriculadas, introduzca la opcion 9 para insertar asignaturas.");
+        }
+
         return copiaProfundaAsignaturas();
     }
 

@@ -48,6 +48,10 @@ public class Alumnos {
 
     public Alumno[] get (){
 
+        if (copiaProfundaAlumnos().length==0){
+            throw new IllegalArgumentException("ERROR: No hay alumnos matriculados.");
+        }
+
         return copiaProfundaAlumnos();
     }
 

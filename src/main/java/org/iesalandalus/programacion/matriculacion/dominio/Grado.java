@@ -3,7 +3,7 @@ package org.iesalandalus.programacion.matriculacion.dominio;
 public enum Grado {
 
     GDCFGB("Grado D Ciclo Formativo de Grado Básico"),
-    GDCFGM(" Grado D Ciclo formativo de Grado Medio"),
+    GDCFGM("Grado D Ciclo formativo de Grado Medio"),
     GDCFGS("Grado D Ciclo Formativo de Grado Superior");
 
     String cadenaAMostrar;
@@ -14,7 +14,7 @@ public enum Grado {
 
     public String imprimir (){
 
-     return this.ordinal() + ".- "+ cadenaAMostrar;
+     return ordinal() + " .- "+ cadenaAMostrar;
     }
 
     @Override

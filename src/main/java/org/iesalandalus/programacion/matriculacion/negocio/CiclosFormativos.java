@@ -42,6 +42,11 @@ public class CiclosFormativos {
     }
 
     public CicloFormativo[] get (){
+
+        if (copiaProfundaCiclosFormativos().length==0){
+            throw new IllegalArgumentException("ERROR: No se encuentran ciclos formativos, inserte uno.");
+        }
+
         return copiaProfundaCiclosFormativos();
     }
 

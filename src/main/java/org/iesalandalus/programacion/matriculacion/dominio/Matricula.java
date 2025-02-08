@@ -208,6 +208,8 @@ public class Matricula {
         this.idMatricula = matricula.idMatricula;
         this.cursoAcademico = matricula.cursoAcademico;
         this.fechaMatriculacion = matricula.fechaMatriculacion;
+        if (matricula.getFechaAnulacion()!=null)
+            this.fechaAnulacion=matricula.getFechaAnulacion();
         this.alumno = matricula.alumno;
         this.coleccionAsignaturas = matricula.coleccionAsignaturas;
 

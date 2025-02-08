@@ -16,7 +16,7 @@ public class Alumno {
     private String ER_TELEFONO="[0-9]{9}";
     private String ER_CORREO="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,5}$";
     private String ER_DNI="([0-9]{8})([a-zA-Z])";
-    public static final String FORMATO_FECHA = "dd/MM/YYYY";
+    public static final String FORMATO_FECHA = "dd/MM/yyyy";
     private String ER_NIA;
     private int MIN_EDAD_ALUMNADO=16;
     private String nombre;
@@ -229,9 +229,15 @@ public class Alumno {
 
     public void setNombre(String nombre) {
 
-       if (nombre==null){
-           throw new NullPointerException("ERROR: El nombre de un alumno no puede ser nulo.");
-       }
+
+        if (nombre==null){
+
+            throw new NullPointerException("ERROR: El nombre de un alumno no puede ser nulo.");
+        } else if (nombre.isBlank()) {
+            throw new IllegalArgumentException("ERROR: El nombre de un alumno no puede estar vacío.");
+        }
+
+
 
        if (nombre.isEmpty()){
 
@@ -290,6 +296,25 @@ public class Alumno {
 
 
 
+        if (dni==null){
+            throw new NullPointerException("ERROR: El dni de un alumno no puede ser nulo.");
+        } else if (dni.isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
+        }
+
+        if (dni.length()!=9){
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
+        }
+
+        if (!comprobarLetraDni(dni)){
+            throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
+        }
+
+        if (!dni.matches(ER_DNI)){
+
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
+        }
+
 
 
         this.dni = dni;
@@ -302,6 +327,10 @@ public class Alumno {
     }
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
+
+        if (fechaNacimiento==null){
+            throw new NullPointerException("ERROR: La fecha de nacimiento de un alumno no puede ser nula.");
+        }
 
         DateTimeFormatter formatoDeLaFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);
        fechaNacimiento.format(formatoDeLaFecha);
@@ -386,51 +415,18 @@ public class Alumno {
 
 
 
-        if (nombre==null){
-
-            throw new NullPointerException("ERROR: El nombre de un alumno no puede ser nulo.");
-        } else if (nombre.isBlank()) {
-            throw new IllegalArgumentException("ERROR: El nombre de un alumno no puede estar vacío.");
-        }
-
-        if (dni==null){
-            throw new NullPointerException("ERROR: El dni de un alumno no puede ser nulo.");
-        } else if (dni.isEmpty()) {
-            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
-        }
-
-        if (dni.length()!=9){
-            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
-        }
-
-        if (!comprobarLetraDni(dni)){
-            throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
-        }
-
-        if (!dni.matches(ER_DNI)){
-
-            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
-        }
-
-        if (fechaNacimiento==null){
-            throw new NullPointerException("ERROR: La fecha de nacimiento de un alumno no puede ser nula.");
-        }
 
 
+
+
+
+
+
+        setNombre(nombre);
+        setDni(dni);
         setCorreo(correo);
         setTelefono(telefono);
         setFechaNacimiento(fechaNacimiento);
-
-
-
-
-        this.nombre = formateaNombre(nombre);
-        this.dni = dni;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
-
-
 
         setNia();
     }
