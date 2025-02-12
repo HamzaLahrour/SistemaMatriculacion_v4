@@ -1,11 +1,7 @@
 package org.iesalandalus.programacion.matriculacion.dominio;
 
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 

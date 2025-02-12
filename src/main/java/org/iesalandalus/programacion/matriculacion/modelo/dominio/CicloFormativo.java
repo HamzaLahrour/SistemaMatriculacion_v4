@@ -1,7 +1,5 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
-import javax.naming.OperationNotSupportedException;
-import java.util.IllegalFormatCodePointException;
 import java.util.Objects;
 
 public class CicloFormativo {

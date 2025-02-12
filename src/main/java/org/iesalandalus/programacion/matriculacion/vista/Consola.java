@@ -1,16 +1,17 @@
 package org.iesalandalus.programacion.matriculacion.vista;
 
 import org.iesalandalus.programacion.matriculacion.dominio.*;
-import org.iesalandalus.programacion.matriculacion.negocio.Alumnos;
-import org.iesalandalus.programacion.matriculacion.negocio.Asignaturas;
-import org.iesalandalus.programacion.matriculacion.negocio.CiclosFormativos;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.iesalandalus.programacion.matriculacion.dominio.Alumno.FORMATO_FECHA;
+import static org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno.FORMATO_FECHA;
 
 public class Consola {
 

@@ -1,12 +1,8 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
-import org.iesalandalus.programacion.utilidades.Entrada;
-
-import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.IllegalFormatCodePointException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

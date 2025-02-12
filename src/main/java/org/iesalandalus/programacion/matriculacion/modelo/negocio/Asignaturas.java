@@ -1,10 +1,8 @@
-package org.iesalandalus.programacion.matriculacion.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
-import org.iesalandalus.programacion.matriculacion.dominio.Asignatura;
-import org.iesalandalus.programacion.matriculacion.dominio.CicloFormativo;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 
 import javax.naming.OperationNotSupportedException;
-import java.util.IllegalFormatCodePointException;
 
 public class Asignaturas {
 
