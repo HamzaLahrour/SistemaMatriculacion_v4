@@ -27,11 +27,19 @@ public class Controlador {
 
         this.modelo = modelo;
         this.vista = vista;
+        vista.setControlador(this);
+
+
+
+
+
+
     }
 
     public void comenzar(){
-        modelo=new Modelo();
-        vista=new Vista();
+        modelo.comenzar();
+        vista.comenzar();
+
     }
 
     public void terminar(){

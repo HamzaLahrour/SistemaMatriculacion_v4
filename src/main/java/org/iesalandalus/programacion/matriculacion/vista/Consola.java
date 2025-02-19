@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.matriculacion.vista;
 
-import org.iesalandalus.programacion.matriculacion.dominio.*;
+//import org.iesalandalus.programacion.matriculacion.dominio.*;
+import org.iesalandalus.programacion.matriculacion.controlador.Controlador;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
@@ -146,23 +147,26 @@ public class Consola {
 
         Grado grado;
 
-        System.out.println("Introduce el codigo del ciclo formativo: ");
+        System.out.println("Introduce el codigo del ciclo formativo (--- Numero de 4 digitos ---): ");
         codigo=Entrada.entero();
         System.out.println("Introduzca la familia profesional del ciclo formativo: ");
         familiaProfesional=Entrada.cadena();
         grado=leerGrado();
         System.out.println("Introduzca el nombre del ciclo formativo: ");
         nombre=Entrada.cadena();
-        System.out.println("Introduzca las horas del ciclo formativo: ");
+        System.out.println("Introduzca las horas del ciclo formativo (--- MAX 2000 horas ---): ");
         horas=Entrada.entero();
 
         return new CicloFormativo(codigo,familiaProfesional,grado,nombre,horas);
 
     }
 
-    public static void mostrarCiclosFormativos (CiclosFormativos ciclosFormativos){
+    public static void mostrarCiclosFormativos (CicloFormativo [] cicloFormativos){
 
-        for (CicloFormativo cicloFormativo : ciclosFormativos.get()){
+
+        System.out.println("*** LISTA DE CICLOS FORMATIVOS ***");
+
+        for (CicloFormativo cicloFormativo : cicloFormativos){
             System.out.println(cicloFormativo);
         }
 
@@ -225,7 +229,7 @@ public class Consola {
 
     }
 
-    public static Asignatura leerAsignatura (CiclosFormativos ciclosFormativos){
+    public static Asignatura leerAsignatura (CicloFormativo cicloFormativo){
 
         String codigo;
         String nombre;
@@ -233,19 +237,19 @@ public class Consola {
         int horasDesdoble=0;
         Curso curso;
         EspecialidadProfesorado especialidadProfesorado;
-        CicloFormativo cicloFormativo;
 
-        System.out.println("Introduzca el codigo de la asignatura: ");
+
+        System.out.println("Introduzca el codigo de la asignatura (--- Numero de 4 digitos ---): ");
         codigo=Entrada.cadena();
         System.out.println("Introduzca el nombre de la asignatura: ");
         nombre=Entrada.cadena();
-        System.out.println("Introduzca las horas anuales de la asignatura: ");
+        System.out.println("Introduzca las horas anuales de la asignatura (--- MAX 300 horas anuales ---): ");
         horasAnuales=Entrada.entero();
         curso=leerCurso();
-        System.out.println("Introduzca el numero de horas desdobles de la asignatura: ");
+        System.out.println("Introduzca el numero de horas desdobles de la asignatura (--- MAX 6 horas ---): ");
         horasDesdoble=Entrada.entero();
         especialidadProfesorado=leerEspecialidadProfesorado();
-        cicloFormativo=getCicloFormativoPorCodigo();
+
 
         return new Asignatura(codigo,nombre,horasAnuales,curso,horasDesdoble,especialidadProfesorado,cicloFormativo);
 
@@ -264,9 +268,11 @@ public class Consola {
         return new Asignatura(codigo,"nombre",111,Curso.PRIMERO,3,EspecialidadProfesorado.FOL,cicloFormativo);
     }
 
-    public static void mostrarAsignaturas (Asignaturas asignaturas){
+    public static void mostrarAsignaturas (Asignatura [] asignaturas){
 
-        for (Asignatura asignatura: asignaturas.get()){
+        System.out.println("*** Lista de asignaturas ***");
+
+        for (Asignatura asignatura: asignaturas){
             System.out.println(asignatura);
         }
 
@@ -289,18 +295,18 @@ public class Consola {
 
 
 
-    public static Matricula leerMatricula (Alumnos alumnos, Asignaturas asignaturas)throws OperationNotSupportedException{
+    public static Matricula leerMatricula (Alumno alumno, Asignatura [] asignaturas)throws OperationNotSupportedException{
 
         int idMatricula=0;
         String cursoAcademico;
         LocalDate fechaMatriculacion;
-        Alumno alumno;
-        int numeroAsignaturas=0;
+        Alumno alumno1;
+        Alumno alumno2;
         CiclosFormativos ciclosFormativos = new CiclosFormativos(3);
-
         Asignatura [] coleccionAsignaturas;
+        Controlador controlador=null;
 
-
+        coleccionAsignaturas=Consola.elegirAsignaturasMatricula(asignaturas);
 
         System.out.println("Introduzca el codigo de la matricula: ");
         idMatricula=Entrada.entero();
@@ -308,44 +314,12 @@ public class Consola {
         System.out.println("Introduzca el curso academico en formato dd-dd: ");
         cursoAcademico=Entrada.cadena();
         fechaMatriculacion=leerFecha("Introduzca la fecha de matriculacion en el formato dd/MM/YYYY: ");
-        alumno=getAlumnoPorDni();
-        alumno=alumnos.buscar(alumno);
 
-        System.out.println("Introduzca el numero de asignaturas de asignaturas de la matricula: ");
-        numeroAsignaturas=Entrada.entero();
+        /*
+        alumno1=getAlumnoPorDni();
+        alumno2=controlador.buscar(alumno1);
 
-        if (numeroAsignaturas<=0){
-            throw new IllegalArgumentException("ERROR: No te puedes matricular con 0 asignaturas.");
-        } else if (numeroAsignaturas>10) {
-            throw new IllegalArgumentException("ERROR: El numero maximo de asignaturas por matricula son 10.");
-        }
-
-        coleccionAsignaturas=new Asignatura[numeroAsignaturas];
-
-        CicloFormativo cicloFormativo;
-        Asignatura asignatura;
-        Asignatura asignatura1;
-
-        for (int i=0; i<numeroAsignaturas;i++){
-
-            System.out.println("Introduzca la asignatura: " + (i+1));
-
-            asignatura=getAsignaturaPorCodigo();
-            asignatura1=asignaturas.buscar(asignatura);
-
-            if (i==0){
-                coleccionAsignaturas[i]=asignatura1;
-
-            }
-
-            if (i>0){
-                if (!asignaturaYaMatriculada(coleccionAsignaturas,asignatura1))
-                coleccionAsignaturas[i]=asignatura1;
-            }
-
-        }
-
-
+         */
 
         return new Matricula(idMatricula,cursoAcademico,fechaMatriculacion,alumno,coleccionAsignaturas);
 
@@ -365,6 +339,55 @@ public class Consola {
 
 
         return new Matricula(idMatricula,"24-25",fechaMatriculacion,alumno,coleccionAsignaturas);
+    }
+
+    public static Asignatura [] elegirAsignaturasMatricula(Asignatura [] asignaturas){
+        int numeroAsignaturas=0;
+        Asignatura [] coleccionAsignaturas;
+        Asignaturas asignaturas1 = new Asignaturas(3);
+        Asignatura asignatura1;
+        Asignatura asignatura;
+
+
+
+        System.out.println("Introduzca el numero de asignaturas de asignaturas de la matricula: ");
+        numeroAsignaturas=Entrada.entero();
+        if (numeroAsignaturas<=0){
+            throw new IllegalArgumentException("ERROR: No te puedes matricular con 0 asignaturas.");
+        } else if (numeroAsignaturas>10) {
+            throw new IllegalArgumentException("ERROR: El numero maximo de asignaturas por matricula son 10.");
+        }
+
+
+
+
+        Consola.mostrarAsignaturas(asignaturas);
+        coleccionAsignaturas=new Asignatura[numeroAsignaturas];
+
+        for (int i=0; i<numeroAsignaturas;i++){
+
+            System.out.println("Introduzca la asignatura: " + (i+1));
+
+            asignatura=getAsignaturaPorCodigo();
+            asignatura1=asignaturas1.buscar(asignatura);
+
+            if (i==0){
+                coleccionAsignaturas[i]=asignatura1;
+
+            }
+
+            if (i>0){
+                if (!asignaturaYaMatriculada(coleccionAsignaturas,asignatura1))
+                    coleccionAsignaturas[i]=asignatura1;
+            }
+
+        }
+
+
+
+        return coleccionAsignaturas;
+
+
     }
 
 
