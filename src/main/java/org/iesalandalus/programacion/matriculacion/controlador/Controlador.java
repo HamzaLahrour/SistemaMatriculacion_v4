@@ -43,7 +43,8 @@ public class Controlador {
     }
 
     public void terminar(){
-        System.out.println("El controlador ha terminado.");
+        vista.terminar();
+        modelo.terminar();
     }
 
     public void insertar(Alumno alumno)throws OperationNotSupportedException {

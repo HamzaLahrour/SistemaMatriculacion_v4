@@ -28,6 +28,7 @@ public class MainApp {
     public static void main(String[] args) throws OperationNotSupportedException {
 
 
+        System.out.println("Iniciando la aplicacion...");
         Modelo modelo = new Modelo();
 
         Vista vista = new Vista();
@@ -35,6 +36,8 @@ public class MainApp {
         Controlador controlador = new Controlador(modelo,vista);
 
         controlador.comenzar();
+
+        System.out.println("Gracias por usar la aplicacion!");
 
     }
 

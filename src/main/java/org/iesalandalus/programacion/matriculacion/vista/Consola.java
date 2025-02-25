@@ -111,6 +111,7 @@ public class Consola {
 
         int opcion=0;
 
+        System.out.println("*** LISTADO DE GRADOS ***");
         for (Grado grado : Grado.values()){
 
             System.out.println(grado.imprimir());
@@ -280,15 +281,14 @@ public class Consola {
 
     public static boolean asignaturaYaMatriculada (Asignatura [] asignaturasMatricula, Asignatura asignatura){
 
-        for (int i=0;i<asignaturasMatricula.length;i++){
-
-            if (asignaturasMatricula[i].equals(asignatura)){
-
-                System.out.println("ERROR: La asignatura introducida ya está matriculada.");
-                return true;
+            for (Asignatura a: asignaturasMatricula){
+                 if (a!=null && a.equals(asignatura)){
+                     System.out.println("ERROR: La asignatura ya está matriculada.");
+                     return true;
+                 }
             }
 
-        }
+
 
         return false;
     }
@@ -345,8 +345,9 @@ public class Consola {
         int numeroAsignaturas=0;
         Asignatura [] coleccionAsignaturas;
         Asignaturas asignaturas1 = new Asignaturas(3);
-        Asignatura asignatura1;
+        Asignatura asignatura1=null;
         Asignatura asignatura;
+
 
 
 
@@ -369,17 +370,23 @@ public class Consola {
             System.out.println("Introduzca la asignatura: " + (i+1));
 
             asignatura=getAsignaturaPorCodigo();
-            asignatura1=asignaturas1.buscar(asignatura);
 
-            if (i==0){
-                coleccionAsignaturas[i]=asignatura1;
+            for (Asignatura a : asignaturas){
+
+                while (asignaturaYaMatriculada(coleccionAsignaturas,asignatura)){
+                    System.out.println("Introduzca el codigo de una asignatura sin matricular.");
+                    asignatura=getAsignaturaPorCodigo();
+                }
+
+
+                if (a.equals(asignatura)){
+                    asignatura1=a;
+                }
 
             }
 
-            if (i>0){
-                if (!asignaturaYaMatriculada(coleccionAsignaturas,asignatura1))
-                    coleccionAsignaturas[i]=asignatura1;
-            }
+            coleccionAsignaturas[i]=asignatura1;
+
 
         }
 

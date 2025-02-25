@@ -43,10 +43,15 @@ public class Vista {
                         System.out.println(e.getMessage());
                     }
 
-
-
                 }
 
+                controlador.terminar();
+
+    }
+
+    public void terminar(){
+
+        System.out.println("Vista terminada.");
     }
 
     private void ejecutarOpcion (Opcion opcion){
@@ -132,7 +137,7 @@ public class Vista {
 
     private void mostrarAlumnos (){
 
-        System.out.println("*** MOSTRAR ALUMNOS ***");
+        System.out.println("*** LISTADO DE ALUMNOS ***");
 
         for (Alumno alumno : controlador.getAlumnos()){
             System.out.println(alumno);
@@ -150,15 +155,17 @@ public class Vista {
         cicloFormativo=Consola.getCicloFormativoPorCodigo();
         cicloFormativo1=controlador.buscar(cicloFormativo);
 
-        asignatura=Consola.leerAsignatura(cicloFormativo1);
+        //asignatura=Consola.leerAsignatura(cicloFormativo1);
 
         try {
+            asignatura=Consola.leerAsignatura(cicloFormativo1);
             controlador.insertar(asignatura);
+            System.out.println("Asignatura insertada correctamente!");
         }catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e){
             System.out.println(e.getMessage());
         }
 
-        System.out.println("Asignatura insertada correctamente!");
+
 
     }
 
@@ -184,11 +191,12 @@ public class Vista {
 
         try {
             controlador.borrar(asignatura);
+            System.out.println("Asignatura eliminada correctamente!");
         }catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e){
             System.out.println(e.getMessage());
         }
 
-        System.out.println("Asignatura eliminada correctamente!");
+
 
     }
 
@@ -213,12 +221,12 @@ public class Vista {
         try {
 
             controlador.insertar(cicloFormativo);
+            System.out.println("CIclo formativo insertado correctamente!");
 
         }catch (OperationNotSupportedException e){
             System.out.println(e.getMessage());
         }
 
-        System.out.println("CIcloFormativo insertado correctamente");
 
     }
 
@@ -241,12 +249,12 @@ public class Vista {
 
         try {
             controlador.borrar(cicloFormativo);
+            System.out.println("CicloFormativo eliminado correctamente!");
 
         }catch (OperationNotSupportedException e){
             System.out.println(e.getMessage());
         }
 
-        System.out.println("CicloFormativo eliminado correctamente!");
 
     }
 
@@ -271,6 +279,7 @@ public class Vista {
 
         Asignatura [] asignaturas= controlador.getAsignaturas();
 
+        mostrarAlumnos();
 
         try {
             alumno=Consola.getAlumnoPorDni();
@@ -278,12 +287,13 @@ public class Vista {
 
             matricula=Consola.leerMatricula(alumno1,asignaturas);
             controlador.insertar(matricula);
+            System.out.println("Matricula insertada correctamente!");
 
         }catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e){
             System.out.println(e.getMessage());
         }
 
-        System.out.println("Matricula insertada correctamente!");
+
     }
 
     private void buscarMatricula (){
@@ -321,6 +331,7 @@ public class Vista {
 
         }catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e){
             System.out.println(e.getMessage());
+            return;
 
         }
 
