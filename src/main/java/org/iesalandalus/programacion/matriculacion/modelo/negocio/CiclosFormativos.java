@@ -11,11 +11,9 @@ public class CiclosFormativos {
 
     List <CicloFormativo> coleccionCiclos = new ArrayList<>();
 
-    public CiclosFormativos(int capacidad) {
+    public CiclosFormativos() {
 
-        if (capacidad<=0){
-            throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-        }
+
     }
 
     private CicloFormativo[] copiaProfundaCiclosFormativos(){

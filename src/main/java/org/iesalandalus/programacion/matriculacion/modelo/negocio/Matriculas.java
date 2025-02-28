@@ -14,7 +14,7 @@ public class Matriculas {
 
      List <Matricula> coleccionMatriculas = new ArrayList<>();
 
-    public Matriculas(int capacidad) {
+    public Matriculas() {
 
 
     }

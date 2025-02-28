@@ -13,11 +13,9 @@ public class Asignaturas {
     private static List<Asignatura> coleccionAsignaturas = new ArrayList<>();
 
 
-    public Asignaturas(int capacidad) {
+    public Asignaturas() {
 
-        if (capacidad<=0){
-            throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-        }
+
 
 
     }
