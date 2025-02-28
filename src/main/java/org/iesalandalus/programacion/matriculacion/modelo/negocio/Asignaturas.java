@@ -1,14 +1,17 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Asignaturas {
 
-    int capacidad;
-    int tamano;
-    Asignatura[] coleccionAsignaturas;
+    private static List<Asignatura> coleccionAsignaturas = new ArrayList<>();
+
 
     public Asignaturas(int capacidad) {
 
@@ -16,75 +19,58 @@ public class Asignaturas {
             throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
         }
 
-        this.capacidad = capacidad;
-        this.coleccionAsignaturas=new Asignatura[capacidad];
+
     }
 
-    public int getCapacidad() {
-        return capacidad;
-    }
-
-    public int getTamano() {
-        return tamano;
-    }
 
     private Asignatura[] copiaProfundaAsignaturas (){
 
-        Asignatura[] copiaProfundaAsignatura= new Asignatura[tamano];
+        List <Asignatura> copiaAsignaturas = new ArrayList<>();
 
-        for (int i=0;i<tamano;i++){
-
-            copiaProfundaAsignatura[i]=new Asignatura(coleccionAsignaturas[i]);
-
+        for (Asignatura asignatura : coleccionAsignaturas){
+            copiaAsignaturas.add(new Asignatura(asignatura));
         }
-        return copiaProfundaAsignatura;
 
+
+        return copiaAsignaturas.toArray(new Asignatura[0]);
     }
 
     public Asignatura[] get (){
 
-        if (copiaProfundaAsignaturas().length==0){
-            throw new IllegalArgumentException("ERROR: No se encuentran asignaturas matriculadas, introduzca la opcion 9 para insertar asignaturas.");
+        Asignatura [] copiaAs=copiaProfundaAsignaturas();
+
+        if (copiaAs.length==0){
+            throw new IllegalArgumentException("ERROR:No hay asignaturas matriculadas");
         }
 
-        return copiaProfundaAsignaturas();
+
+        return copiaAs;
     }
 
     public void insertar (Asignatura asignatura)throws OperationNotSupportedException{
 
-        if (asignatura==null){
-            throw new NullPointerException("ERROR: No se puede insertar una asignatura nula.");
-        }
-
-        for (int i=0;i<tamano;i++){
-            if (coleccionAsignaturas[i].equals(asignatura)){
-                throw new OperationNotSupportedException("ERROR: Ya existe una asignatura con ese código.");
-            }
-        }
-
-        if (tamano==capacidad){
-            throw new OperationNotSupportedException("ERROR: No se aceptan más asignaturas.");
-        }
-
-        if (tamano<capacidad){
-            coleccionAsignaturas[tamano]=new Asignatura(asignatura);
-            tamano++;
-        }
-
+        if (!coleccionAsignaturas.contains(asignatura)){
+            coleccionAsignaturas.add(asignatura);
+        }else
+            System.out.println("ERROR:La asignatura ya existe.");
 
 
     }
 
     public Asignatura buscar (Asignatura asignatura){
 
-        for (int i=0;i<tamano;i++){
+        Iterator <Asignatura> asignaturaIterator=coleccionAsignaturas.iterator();
 
-            if (coleccionAsignaturas[i].equals(asignatura)){
-                return coleccionAsignaturas[i];
+        while (asignaturaIterator.hasNext()){
+            Asignatura asignatura1= asignaturaIterator.next();
+
+            if (asignatura1.equals(asignatura)){
+                return asignatura1;
             }
         }
         return null;
     }
+
 
     public void borrar (Asignatura asignatura)throws OperationNotSupportedException{
 
@@ -93,18 +79,13 @@ public class Asignaturas {
         }
 
 
-        for (int i=0;i<tamano;i++){
-            if (coleccionAsignaturas[i].equals(asignatura)){
-                for (int r=i;r<tamano-1;r++){
-                    coleccionAsignaturas[r]=coleccionAsignaturas[r+1];
-                }
-                tamano--;
+        if (coleccionAsignaturas.contains(asignatura)){
+            coleccionAsignaturas.remove(asignatura);
+        }else{
+            throw new OperationNotSupportedException("ERROR: No existe ninguna asignatura como la indicada.");
 
-                return;
-            }
         }
 
-        throw new OperationNotSupportedException("ERROR: No existe ninguna asignatura como la indicada.");
     }
 
 

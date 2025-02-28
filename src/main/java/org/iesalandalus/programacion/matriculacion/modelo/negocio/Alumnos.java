@@ -3,12 +3,16 @@ package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Alumnos {
 
-    int capacidad;
-    int tamano;
-    Alumno [] coleccionAlumnos;
+
+    //Alumno [] coleccionAlumnos;
+
+    private static List <Alumno> coleccionAlumnos = new ArrayList<>();
 
     public Alumnos(int capacidad) {
 
@@ -16,108 +20,83 @@ public class Alumnos {
             throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
         }
 
-        this.capacidad = capacidad;
-        this.coleccionAlumnos=new Alumno[capacidad];
     }
 
 
 
-    public int getCapacidad() {
-        return capacidad;
-    }
 
+
+    /*
     public int getTamano() {
         return tamano;
     }
+
+     */
 
 
 
     private Alumno[] copiaProfundaAlumnos(){
 
-        Alumno[] copiaAlumno=new Alumno[tamano];
+        List <Alumno> copiaAlumno = new ArrayList<>();
 
-        for (int i=0;i<tamano;i++){
-
-            copiaAlumno[i]=new Alumno(coleccionAlumnos[i]);
+        for (Alumno alumno : coleccionAlumnos){
+            copiaAlumno.add(new Alumno(alumno));
         }
-        return copiaAlumno;
 
+
+        return copiaAlumno.toArray(copiaAlumno.toArray(new Alumno[0]));
     }
 
     public Alumno[] get (){
 
-        if (copiaProfundaAlumnos().length==0){
+        Alumno [] copia = copiaProfundaAlumnos();
+
+        if (copia.length==0){
             throw new IllegalArgumentException("ERROR: No hay alumnos matriculados.");
         }
 
-        return copiaProfundaAlumnos();
+        return copia;
     }
 
-    public void insertar (Alumno alumno)throws OperationNotSupportedException{
+    public void insertar (Alumno alumno){
 
-        if (alumno==null){
-
-            throw new NullPointerException("ERROR: No se puede insertar un alumno nulo.");
-        }
-
-        if (tamano==capacidad){
-
-            throw new OperationNotSupportedException("ERROR: No se aceptan más alumnos.");
-        }
-
-       for (int i=0;i<tamano;i++){
-           if (coleccionAlumnos[i].getDni().equals(alumno.getDni())){
-                throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese dni.");
-           }
-       }
-
-       if (tamano<capacidad){
-
-            coleccionAlumnos[tamano]=new Alumno(alumno);
-            tamano++;
-
+        if (!coleccionAlumnos.contains(alumno)){
+            coleccionAlumnos.add(alumno);
+        }else {
+            System.out.println("ERROR: El alumno introducido ya existe.");
         }
 
     }
 
     public Alumno buscar (Alumno alumno){
-        for (int i=0;i<tamano;i++){
-          if (coleccionAlumnos[i].equals(alumno)){
-              return coleccionAlumnos[i];
-          }
+        Iterator <Alumno> alumnoIterator=coleccionAlumnos.iterator();
+
+        while (alumnoIterator.hasNext()){
+            Alumno alumno1 = alumnoIterator.next();
+
+            if (alumno1.equals(alumno)){
+                return alumno1;
+            }
+
         }
-            return null;
+
+        return null;
     }
 
     public void borrar(Alumno alumno)throws OperationNotSupportedException{
 
         if (alumno==null){
-            throw new NullPointerException("ERROR: No se puede borrar un alumno nulo.");
+            throw new NullPointerException("ERROR:El alumno no puede ser nulo.");
         }
 
-        for (int i=0;i<tamano;i++){
-            if (coleccionAlumnos[i].getDni().equals(alumno.getDni())){
-                for (int r=i;r<tamano-1;r++){
-
-                    coleccionAlumnos[r]=coleccionAlumnos[r+1];
-                }
-                tamano--;
-                return;
-            }
-        }
-            throw new OperationNotSupportedException("ERROR: No existe ningún alumno como el indicado.");
+        if (coleccionAlumnos.contains(alumno)){
+            coleccionAlumnos.remove(alumno);
+        }else
+            throw new OperationNotSupportedException("ERROR:El alumno no se encuentra en la coleccion.");
     }
 
-    private int buscarIndice(Alumno alumno){
-        int indice=-1;
 
-        for (int i=0;i<coleccionAlumnos.length;i++){
-            if (coleccionAlumnos[i].equals(alumno)){
-                indice=i;
-            }
-        }
-        return indice;
-    }
+
 
 
 

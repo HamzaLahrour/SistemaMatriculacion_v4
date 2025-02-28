@@ -3,112 +3,72 @@ package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class CiclosFormativos {
 
-    int capacidad;
-    int tamano;
-    CicloFormativo [] coleccionCiclos;
+    List <CicloFormativo> coleccionCiclos = new ArrayList<>();
 
     public CiclosFormativos(int capacidad) {
 
         if (capacidad<=0){
             throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
         }
-
-        this.capacidad = capacidad;
-        this.coleccionCiclos=new CicloFormativo[capacidad];
-    }
-
-    public int getCapacidad() {
-        return capacidad;
-    }
-
-    public int getTamano() {
-        return tamano;
     }
 
     private CicloFormativo[] copiaProfundaCiclosFormativos(){
 
-        CicloFormativo[] copiaCicloFormativo=new CicloFormativo[tamano];
+        List<CicloFormativo> copiaCiclo =new ArrayList<>();
 
-        for (int i=0;i<tamano;i++){
-
-            copiaCicloFormativo[i]=new CicloFormativo(coleccionCiclos[i]);
-
+        for (CicloFormativo cicloFormativo : coleccionCiclos){
+            copiaCiclo.add(new CicloFormativo(cicloFormativo)); //Usamos el constructor copia
         }
-        return copiaCicloFormativo;
-
+        return copiaCiclo.toArray(new CicloFormativo[0]);
     }
 
     public CicloFormativo[] get (){
 
-        if (copiaProfundaCiclosFormativos().length==0){
-            throw new IllegalArgumentException("ERROR: No se encuentran ciclos formativos, inserte uno.");
+        CicloFormativo [] copiaCic = copiaProfundaCiclosFormativos();
+        if (copiaCic.length==0){
+            throw new IllegalArgumentException("ERROR: No hay ciclos matriculados.");
         }
 
-        return copiaProfundaCiclosFormativos();
+        return copiaCic;
     }
 
     public void insertar (CicloFormativo cicloFormativo)throws OperationNotSupportedException{
 
-        if (cicloFormativo==null){
-            throw new NullPointerException("ERROR: No se puede insertar un ciclo formativo nulo.");
+        if (!coleccionCiclos.contains(cicloFormativo)) {
+        coleccionCiclos.add(cicloFormativo);
+        }else {
+            System.out.println("ERROR:El ciclo formativo ya existe.");
         }
-        for (int i=0;i<tamano;i++){
-
-          if (coleccionCiclos[i].equals(cicloFormativo)){
-
-              throw new OperationNotSupportedException("ERROR: Ya existe un ciclo formativo con ese código.");
-
-          }
-
-        }
-
-        if (tamano==capacidad){
-
-            throw new OperationNotSupportedException("ERROR: No se aceptan más ciclos formativos.");
-        }
-
-        if (tamano<capacidad){
-            coleccionCiclos[tamano]=new CicloFormativo(cicloFormativo);
-            tamano++;
-        }
-
     }
 
     public CicloFormativo buscar (CicloFormativo cicloFormativo){
-        for (int i=0;i<tamano;i++){
 
-            if (coleccionCiclos[i].equals(cicloFormativo)){
-                return coleccionCiclos[i];
+        Iterator<CicloFormativo> cicloFormativoIterator = coleccionCiclos.iterator();
+
+        while (cicloFormativoIterator.hasNext()){
+            CicloFormativo cicloFormativo1 = cicloFormativoIterator.next();
+
+            if (cicloFormativo1.equals(cicloFormativo)){
+                return cicloFormativo1;
             }
         }
         return null;
-
     }
 
     public void borrar (CicloFormativo cicloFormativo)throws OperationNotSupportedException{
 
-        if (cicloFormativo==null){
-            throw new NullPointerException("ERROR: No se puede borrar un ciclo formativo nulo.");
-        }
-
-        for (int i=0;i<tamano;i++){
-
-            if (coleccionCiclos[i].equals(cicloFormativo)){
-
-                for (int r=i;r<tamano-1;r++){
-                    coleccionCiclos[r]=coleccionCiclos[r+1];
-                }
-                    tamano--;
-
-                    return;
-            }
+        if (coleccionCiclos.contains(cicloFormativo)){
+            coleccionCiclos.remove(cicloFormativo);
+        }else {
+            throw new OperationNotSupportedException("ERROR: No existe ningún ciclo formativo como el indicado.");
 
         }
-
-        throw new OperationNotSupportedException("ERROR: No existe ningún ciclo formativo como el indicado.");
     }
 
 
