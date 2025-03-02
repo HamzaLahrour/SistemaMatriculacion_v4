@@ -35,10 +35,12 @@ public class Grado {
                 c = c + palabras[i].charAt(0);
         }
 
+        String incial;
 
-        String inciales;
+        incial=c.toUpperCase();
 
-        inciales=c.toUpperCase();
+        this.iniciales=incial;
+
 
     }
 
@@ -51,5 +53,6 @@ public class Grado {
         if (numAnios<0){
             throw new IllegalArgumentException("ERROR: El número de años de un grado debe ser mayor que 0.");
         }
+        this.numAnios=numAnios;
     }
 }

@@ -6,7 +6,7 @@ public class GradoD extends Grado {
     public GradoD(String nombre,int numAnios, Modalidad modalidad) {
         super(nombre);
         setModalidad(modalidad);
-        setnumAnios(numAnios);
+        setNumAnios(numAnios);
     }
 
     public Modalidad getModalidad(){
@@ -22,10 +22,13 @@ public class GradoD extends Grado {
         this.modalidad=modalidad;
 
     }
-    public void setnumAnios(int numAnios){
-        if (numAnios != 2 && numAnios!=3){
-            throw new IllegalArgumentException("ERROR: El número de años de un GradoD debe ser 2 o 3 años.");
+
+    @Override
+    public void setNumAnios(int numAnios) {
+        if (numAnios !=2 && numAnios!=3){
+            throw new IllegalArgumentException("ERROR: ERROR: Los grados D solo pueden tener 2 o 3 años.");
         }
+        this.numAnios=numAnios;
     }
 
     @Override
