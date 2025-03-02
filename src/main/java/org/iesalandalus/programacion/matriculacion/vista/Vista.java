@@ -15,8 +15,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Vista {
+
+
     private Controlador controlador;
 
+
+    public Vista (){
+
+        Opcion.setVista(this);
+    }
 
     public void setControlador (Controlador controlador){
 
@@ -57,7 +64,7 @@ public class Vista {
         System.out.println("Vista terminada.");
     }
 
-    private void ejecutarOpcion (Opcion opcion){
+    public void ejecutarOpcion (Opcion opcion){
 
 
 
@@ -87,7 +94,7 @@ public class Vista {
 
     }
 
-    private void insertarAlumno(){
+    public void insertarAlumno(){
 
         System.out.println("*** INSERTAR ALUMNO ***");
 
@@ -103,7 +110,7 @@ public class Vista {
             System.out.println(e.getMessage());
         }
     }
-    private void buscarAlumno (){
+    public void buscarAlumno (){
 
 
         System.out.println("*** BUSQUEDA DE ALUMNOS ***");
@@ -119,7 +126,7 @@ public class Vista {
 
 
     }
-    private void borrarAlumno (){
+    public void borrarAlumno (){
 
         System.out.println("*** ELIMINAR ALUMNO ***");
 
@@ -138,7 +145,7 @@ public class Vista {
         System.out.println("Alumno eliminado correctamente!");
     }
 
-    private void mostrarAlumnos (){
+    public void mostrarAlumnos (){
 
         System.out.println("*** LISTADO DE ALUMNOS ***");
 
@@ -151,7 +158,7 @@ public class Vista {
         alumnosOrdenados.forEach(System.out::println);
     }
 
-    private void insertarAsignatura (){
+    public void insertarAsignatura (){
         System.out.println("*** INSERTAR ASIGNATURA ***");
 
         Asignatura asignatura;
@@ -176,7 +183,7 @@ public class Vista {
 
     }
 
-    private void buscarAsignatura (){
+    public void buscarAsignatura (){
 
         System.out.println("*** BUSCAR ASIGNATURAS ***");
 
@@ -188,7 +195,7 @@ public class Vista {
 
     }
 
-    private void borrarAsignatura (){
+    public void borrarAsignatura (){
 
 
         System.out.println("*** ELIMINAR ASIGNATURA ***");
@@ -207,7 +214,7 @@ public class Vista {
 
     }
 
-    private void mostrarAsignaturas (){
+    public void mostrarAsignaturas (){
 
         System.out.println("*** MOSTRAR ASIGNATURAS ***");
 
@@ -219,7 +226,7 @@ public class Vista {
 
     }
 
-    private void insertarCiclosFormativos (){
+    public void insertarCiclosFormativos (){
 
         System.out.println("*** INSERTAR CICLOS FORMATIVOS ***");
 
@@ -239,7 +246,7 @@ public class Vista {
 
     }
 
-    private void buscarCicloFormartivo (){
+    public void buscarCicloFormartivo (){
 
         System.out.println("*** BUSCAR CICLO FORMATIVO ***");
 
@@ -248,7 +255,7 @@ public class Vista {
         System.out.println(controlador.buscar(cicloFormativo));
     }
 
-    private void borrarCicloFormativo (){
+    public void borrarCicloFormativo (){
 
         System.out.println("*** ELIMINAR CICLO FORMATIVO ***");
 
@@ -267,7 +274,7 @@ public class Vista {
 
     }
 
-    private void mostrarCiclosFormativos (){
+    public void mostrarCiclosFormativos (){
 
         System.out.println("*** MOSTRAR CICLOS FORMATIVOS ***");
 
@@ -277,7 +284,7 @@ public class Vista {
        cicloFormativosOrdenados.forEach(System.out::println);
     }
 
-    private void insertarMatricula (){
+    public void insertarMatricula (){
 
 
         System.out.println("*** INSERTAR MATRICULA ***");
@@ -304,7 +311,7 @@ public class Vista {
 
     }
 
-    private void buscarMatricula (){
+    public void buscarMatricula (){
 
 
         System.out.println("*** BUSCAR MATRICULA ***");
@@ -322,7 +329,7 @@ public class Vista {
 
     }
 
-    private void anularMatricula (){
+    public void anularMatricula (){
 
         System.out.println("*** ANULAR MATRICULA ***");
 
@@ -361,7 +368,7 @@ public class Vista {
 
     }
 
-    private void mostrarMatriculas (){
+    public void mostrarMatriculas (){
 
 
         System.out.println("*** MOSTRAR MATRICULAS ***");
@@ -380,7 +387,7 @@ public class Vista {
 
     }
 
-    private void mostrarMatriculasPorAlumno (){
+    public void mostrarMatriculasPorAlumno (){
 
         System.out.println("*** MOSTRAR MATRICULAS POR ALUMNO ***");
 
@@ -395,7 +402,7 @@ public class Vista {
 
     }
 
-    private void mostrarMatriculasPorCursoAcademico (){
+    public void mostrarMatriculasPorCursoAcademico (){
 
         System.out.println("*** MOSTRAR MATRICULAS POR CURSO ACADEMICO ***");
 
@@ -409,7 +416,7 @@ public class Vista {
         }
     }
 
-    private void mostrarMatriculasPorCicloFormativo (){
+    public void mostrarMatriculasPorCicloFormativo (){
 
 
         System.out.println("*** MOSTRAR MATRICULAS POR CICLO FORMATIVO ***");
