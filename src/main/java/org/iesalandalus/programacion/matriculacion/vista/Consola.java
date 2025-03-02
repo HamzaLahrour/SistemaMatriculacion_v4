@@ -11,6 +11,7 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno.FORMATO_FECHA;
 
@@ -162,7 +163,7 @@ public class Consola {
 
     }
 
-    public static void mostrarCiclosFormativos (CicloFormativo [] cicloFormativos){
+    public static void mostrarCiclosFormativos (List<CicloFormativo> cicloFormativos){
 
 
         System.out.println("*** LISTA DE CICLOS FORMATIVOS ***");
@@ -269,7 +270,7 @@ public class Consola {
         return new Asignatura(codigo,"nombre",111,Curso.PRIMERO,3,EspecialidadProfesorado.FOL,cicloFormativo);
     }
 
-    public static void mostrarAsignaturas (Asignatura [] asignaturas){
+    public static void mostrarAsignaturas (List<Asignatura> asignaturas){
 
         System.out.println("*** Lista de asignaturas ***");
 
@@ -295,14 +296,14 @@ public class Consola {
 
 
 
-    public static Matricula leerMatricula (Alumno alumno, Asignatura [] asignaturas)throws OperationNotSupportedException{
+    public static Matricula leerMatricula (Alumno alumno, List<Asignatura> asignaturas)throws OperationNotSupportedException{
 
         int idMatricula=0;
         String cursoAcademico;
         LocalDate fechaMatriculacion;
         Alumno alumno1;
         Alumno alumno2;
-        CiclosFormativos ciclosFormativos = new CiclosFormativos(3);
+        CiclosFormativos ciclosFormativos = new CiclosFormativos();
         Asignatura [] coleccionAsignaturas;
         Controlador controlador=null;
 
@@ -341,10 +342,10 @@ public class Consola {
         return new Matricula(idMatricula,"24-25",fechaMatriculacion,alumno,coleccionAsignaturas);
     }
 
-    public static Asignatura [] elegirAsignaturasMatricula(Asignatura [] asignaturas){
+    public static Asignatura [] elegirAsignaturasMatricula(List<Asignatura> asignaturas){
         int numeroAsignaturas=0;
         Asignatura [] coleccionAsignaturas;
-        Asignaturas asignaturas1 = new Asignaturas(3);
+        Asignaturas asignaturas1 = new Asignaturas();
         Asignatura asignatura1=null;
         Asignatura asignatura;
 

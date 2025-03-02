@@ -10,6 +10,9 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Vista {
     private Controlador controlador;
@@ -139,9 +142,13 @@ public class Vista {
 
         System.out.println("*** LISTADO DE ALUMNOS ***");
 
-        for (Alumno alumno : controlador.getAlumnos()){
-            System.out.println(alumno);
-        }
+        List<Alumno> alumnosOrdenados =controlador.getAlumnos().stream()
+                .sorted(Comparator.comparing(Alumno::getNombre)).
+                toList();
+
+
+
+        alumnosOrdenados.forEach(System.out::println);
     }
 
     private void insertarAsignatura (){
@@ -204,9 +211,11 @@ public class Vista {
 
         System.out.println("*** MOSTRAR ASIGNATURAS ***");
 
-        for (Asignatura asignatura : controlador.getAsignaturas()){
-            System.out.println(asignatura);
-        }
+        List<Asignatura> asignaturasOrdenadas = controlador.getAsignaturas().stream()
+                .sorted(Comparator.comparing(Asignatura::getNombre)).
+                toList();
+
+        asignaturasOrdenadas.forEach(System.out::println);
 
     }
 
@@ -262,11 +271,10 @@ public class Vista {
 
         System.out.println("*** MOSTRAR CICLOS FORMATIVOS ***");
 
-        for (CicloFormativo cicloFormativo : controlador.getCiclosFormativos()){
+       List<CicloFormativo> cicloFormativosOrdenados=controlador.getCiclosFormativos().stream()
+               .sorted(Comparator.comparing(CicloFormativo::getNombre)).toList();
 
-            System.out.println(cicloFormativo);
-
-        }
+       cicloFormativosOrdenados.forEach(System.out::println);
     }
 
     private void insertarMatricula (){
@@ -277,7 +285,7 @@ public class Vista {
         Alumno alumno=null;
         Alumno alumno1=null;
 
-        Asignatura [] asignaturas= controlador.getAsignaturas();
+        List<Asignatura> asignaturas= controlador.getAsignaturas();
 
         mostrarAlumnos();
 
@@ -359,11 +367,13 @@ public class Vista {
         System.out.println("*** MOSTRAR MATRICULAS ***");
 
         try {
-            for (Matricula matricula : controlador.getMatriculas()){
+            List<Matricula> matriculasOrdenadas = controlador.getMatriculas().stream()
+                    .sorted(Comparator.comparing(Matricula::getFechaMatriculacion).reversed()
+                            .thenComparing(matricula -> matricula.getAlumno().getNombre()))
+                    .toList();
 
-                System.out.println(matricula);
-            }
 
+            matriculasOrdenadas.forEach(System.out::println);
         }catch (OperationNotSupportedException e){
             System.out.println(e.getMessage());
         }

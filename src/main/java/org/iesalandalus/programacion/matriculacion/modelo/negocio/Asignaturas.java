@@ -21,7 +21,7 @@ public class Asignaturas {
     }
 
 
-    private Asignatura[] copiaProfundaAsignaturas (){
+    private List<Asignatura> copiaProfundaAsignaturas (){
 
         List <Asignatura> copiaAsignaturas = new ArrayList<>();
 
@@ -29,15 +29,14 @@ public class Asignaturas {
             copiaAsignaturas.add(new Asignatura(asignatura));
         }
 
-
-        return copiaAsignaturas.toArray(new Asignatura[0]);
+        return copiaAsignaturas;
     }
 
-    public Asignatura[] get (){
+    public List<Asignatura> get (){
 
-        Asignatura [] copiaAs=copiaProfundaAsignaturas();
+        List<Asignatura> copiaAs=copiaProfundaAsignaturas();
 
-        if (copiaAs.length==0){
+        if (copiaAs.isEmpty()){
             throw new IllegalArgumentException("ERROR:No hay asignaturas matriculadas");
         }
 

@@ -21,20 +21,20 @@ public class Matriculas {
 
 
 
-    private Matricula[] copiaProfundaMatriculas()throws OperationNotSupportedException{
+    private List<Matricula> copiaProfundaMatriculas()throws OperationNotSupportedException{
 
         List<Matricula> matriculaCopia = new ArrayList<>();
 
         for (Matricula matricula: coleccionMatriculas){
             matriculaCopia.add(new Matricula(matricula));
         }
-        return matriculaCopia.toArray(new Matricula[0]);
+        return matriculaCopia;
     }
 
-    public Matricula [] get ()throws OperationNotSupportedException{
+    public List<Matricula> get ()throws OperationNotSupportedException{
 
-        Matricula [] copiaMa=copiaProfundaMatriculas();
-        if (copiaMa.length==0){
+       List<Matricula> copiaMa=copiaProfundaMatriculas();
+        if (copiaMa.isEmpty()){
             throw new IllegalArgumentException("ERROR:No hay matriculas registradas.");
         }
         return copiaMa;
@@ -72,7 +72,7 @@ public class Matriculas {
 
     }
 
-    public Matricula [] get (Alumno alumno){
+    public List<Matricula> get (Alumno alumno){
 
         if (alumno==null){
             throw new NullPointerException("ERROR:Alumno no puede ser nulo.");
@@ -85,11 +85,11 @@ public class Matriculas {
                 coleccionMatriculasPorAlumno.add(matricula);
             }
         }
-       return coleccionMatriculasPorAlumno.toArray(new Matricula[0]);
+       return coleccionMatriculasPorAlumno;
 
     }
 
-    public Matricula [] get (String cursoAcademico){
+    public List<Matricula> get (String cursoAcademico){
 
         if (cursoAcademico==null){
             throw new IllegalArgumentException("ERROR:El curso academico no puede ser nulo.");
@@ -102,11 +102,11 @@ public class Matriculas {
             }
         }
 
-        return coleccionMatriCurso.toArray(new Matricula[0]);
+        return coleccionMatriCurso;
     }
 
 
-    public Matricula [] get (CicloFormativo cicloFormativo){
+    public List<Matricula> get (CicloFormativo cicloFormativo){
 
         if (cicloFormativo==null){
             throw new NullPointerException("ERROR:El ciclo no puede ser nulo.");
@@ -124,7 +124,7 @@ public class Matriculas {
 
         }
 
-        return coleccionMatriculasCiclo.toArray(new Matricula[0]);
+        return coleccionMatriculasCiclo;
 
     }
 

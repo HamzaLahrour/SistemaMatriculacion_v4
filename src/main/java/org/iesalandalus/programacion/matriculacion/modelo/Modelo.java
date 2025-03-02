@@ -10,6 +10,7 @@ import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativ
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Matriculas;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.List;
 
 public class Modelo {
 
@@ -45,7 +46,7 @@ public class Modelo {
     }
 
 
-    public Alumno[] getAlumnos(){
+    public List<Alumno> getAlumnos(){
         return alumnos.get();
     }
 
@@ -64,7 +65,7 @@ public class Modelo {
     }
 
 
-    public Asignatura [] getAsignaturas(){
+    public List<Asignatura> getAsignaturas(){
         return asignaturas.get();
     }
 
@@ -81,7 +82,7 @@ public class Modelo {
     }
 
 
-    public CicloFormativo [] getCiclosFormativos(){
+    public List<CicloFormativo> getCiclosFormativos(){
         return ciclosFormativos.get();
     }
 
@@ -98,17 +99,17 @@ public class Modelo {
     public void borrar(Matricula matricula)throws OperationNotSupportedException{
         matriculas.borrar(matricula);
     }
-    public Matricula [] getMatriculas()throws OperationNotSupportedException{
+    public List<Matricula> getMatriculas()throws OperationNotSupportedException{
         return matriculas.get();
     }
-    public Matricula [] getMatriculas(Alumno alumno){
+    public List<Matricula> getMatriculas(Alumno alumno){
         return matriculas.get(alumno);
     }
-    public Matricula [] getMatriculas(CicloFormativo cicloFormativo){
+    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo){
         return matriculas.get(cicloFormativo);
     }
 
-    public Matricula [] getMatriculas(String cursoAcademico){
+    public List<Matricula> getMatriculas(String cursoAcademico){
         return matriculas.get(cursoAcademico);
     }
 

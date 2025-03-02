@@ -16,20 +16,20 @@ public class CiclosFormativos {
 
     }
 
-    private CicloFormativo[] copiaProfundaCiclosFormativos(){
+    private List<CicloFormativo> copiaProfundaCiclosFormativos(){
 
         List<CicloFormativo> copiaCiclo =new ArrayList<>();
 
         for (CicloFormativo cicloFormativo : coleccionCiclos){
             copiaCiclo.add(new CicloFormativo(cicloFormativo)); //Usamos el constructor copia
         }
-        return copiaCiclo.toArray(new CicloFormativo[0]);
+        return copiaCiclo;
     }
 
-    public CicloFormativo[] get (){
+    public List<CicloFormativo> get (){
 
-        CicloFormativo [] copiaCic = copiaProfundaCiclosFormativos();
-        if (copiaCic.length==0){
+       List<CicloFormativo> copiaCic = copiaProfundaCiclosFormativos();
+        if (copiaCic.isEmpty()){
             throw new IllegalArgumentException("ERROR: No hay ciclos matriculados.");
         }
 

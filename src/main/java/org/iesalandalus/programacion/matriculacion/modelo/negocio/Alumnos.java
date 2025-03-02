@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Alumnos {
 
 
 
-    private Alumno[] copiaProfundaAlumnos(){
+    private List<Alumno> copiaProfundaAlumnos(){
 
         List <Alumno> copiaAlumno = new ArrayList<>();
 
@@ -40,14 +41,14 @@ public class Alumnos {
         }
 
 
-        return copiaAlumno.toArray(copiaAlumno.toArray(new Alumno[0]));
+        return copiaAlumno;
     }
 
-    public Alumno[] get (){
+    public List<Alumno> get (){
 
-        Alumno [] copia = copiaProfundaAlumnos();
+        List<Alumno> copia = copiaProfundaAlumnos();
 
-        if (copia.length==0){
+        if (copia.isEmpty()){
             throw new IllegalArgumentException("ERROR: No hay alumnos matriculados.");
         }
 
@@ -59,7 +60,7 @@ public class Alumnos {
         if (!coleccionAlumnos.contains(alumno)){
             coleccionAlumnos.add(alumno);
         }else {
-            System.out.println("ERROR: El alumno introducido ya existe.");
+            throw new IllegalArgumentException("ERROR:El alumno ya existe.");
         }
 
     }

@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 import org.iesalandalus.programacion.matriculacion.vista.Vista;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.List;
 
 public class Controlador {
 
@@ -56,7 +57,7 @@ public class Controlador {
     public void borrar(Alumno alumno)throws OperationNotSupportedException{
         modelo.borrar(alumno);
     }
-    public Alumno[] getAlumnos(){
+    public List<Alumno> getAlumnos(){
         return modelo.getAlumnos();
     }
     public void insertar(Asignatura asignatura)throws OperationNotSupportedException{
@@ -68,7 +69,7 @@ public class Controlador {
     public void borrar(Asignatura asignatura)throws OperationNotSupportedException{
         modelo.borrar(asignatura);
     }
-    public Asignatura [] getAsignaturas(){
+    public List<Asignatura> getAsignaturas(){
         return modelo.getAsignaturas();
     }
     public void insertar(CicloFormativo cicloFormativo)throws OperationNotSupportedException{
@@ -80,7 +81,7 @@ public class Controlador {
     public void borrar(CicloFormativo cicloFormativo)throws OperationNotSupportedException{
         modelo.borrar(cicloFormativo);
     }
-    public CicloFormativo [] getCiclosFormativos (){
+    public List<CicloFormativo> getCiclosFormativos (){
         return modelo.getCiclosFormativos();
     }
     public void insertar(Matricula matricula)throws OperationNotSupportedException {
@@ -93,16 +94,16 @@ public class Controlador {
         modelo.borrar(matricula);
     }
 
-    public Matricula [] getMatriculas()throws OperationNotSupportedException{
+    public List<Matricula> getMatriculas()throws OperationNotSupportedException{
         return modelo.getMatriculas();
     }
-    public Matricula [] getMatriculas(Alumno alumno){
+    public List<Matricula> getMatriculas(Alumno alumno){
         return modelo.getMatriculas(alumno);
     }
-    public Matricula [] getMatriculas(CicloFormativo cicloFormativo){
+    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo){
         return modelo.getMatriculas(cicloFormativo);
     }
-    public Matricula [] getMatriculas (String cursoAcademico){
+    public List<Matricula> getMatriculas (String cursoAcademico){
         return modelo.getMatriculas(cursoAcademico);
     }
 
