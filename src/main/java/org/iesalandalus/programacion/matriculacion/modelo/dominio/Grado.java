@@ -1,26 +1,53 @@
 package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
-public enum Grado {
+public class Grado {
+    protected String nombre;
+    protected String iniciales;
+    protected int numAnios;
 
-    GDCFGB("Grado D Ciclo Formativo de Grado Básico"),
-    GDCFGM("Grado D Ciclo formativo de Grado Medio"),
-    GDCFGS("Grado D Ciclo Formativo de Grado Superior");
-
-    String cadenaAMostrar;
-
-    private Grado(String cadenaAMostrar) {
-        this.cadenaAMostrar = cadenaAMostrar;
+    public Grado(String nombre) {
+        this.nombre = nombre;
+        setIniciales();
     }
 
-    public String imprimir (){
+    public String getNombre() {
+        return nombre;
+    }
 
-     return ordinal() + " .- "+ cadenaAMostrar;
+    public void setNombre(String nombre) {
+        if (nombre==null){
+            throw new IllegalArgumentException("ERROR: El nombre de un grado no puede ser nulo.");
+        }
+
+        if (nombre.isBlank()){
+            throw new IllegalArgumentException("ERROR: El nombre de un grado no puede estar vacio.");
+        }
+
+        this.nombre = nombre;
+    }
+    private void setIniciales(){
+
+        String[] palabras = nombre.split("\\s");
+
+        String c = "";
+        for (int i = 0; i < palabras.length; i++) {
+            if (!palabras[i].equals(""))
+                c = c + palabras[i].charAt(0);
+        }
+
+
+        String inciales;
+
+        inciales=c.toUpperCase();
+
     }
 
     @Override
     public String toString() {
-        return "Grado{" +
-                "cadenaAMostrar='" + cadenaAMostrar + '\'' +
-                '}';
+        return  "(" + iniciales + ") - " + nombre;
+    }
+
+    public void setNumAnios(int numAnios){
+
     }
 }
