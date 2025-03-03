@@ -108,36 +108,82 @@ public class Consola {
 
     }
 
-    public static Grado leerGrado (){
+    public static TiposGrado leerTiposGrado (){
 
-        int opcion=0;
+        int opcion;
 
-        System.out.println("*** LISTADO DE GRADOS ***");
-        for (Grado grado : Grado.values()){
-
+        System.out.println("*** TIPOS DE GRADO ***");
+        for (TiposGrado grado: TiposGrado.values()){
             System.out.println(grado.imprimir());
+        }
 
+
+        do {
+            System.out.println("Escoja una opcion del 1 al 2, para elegir el tipo de grado.");
+            opcion=Entrada.entero();
+        }while (opcion!=1 && opcion!=2);
+
+        if (opcion==1){
+            return TiposGrado.GRADOD;
+        }else {
+            return TiposGrado.GRADOE;
+        }
+
+    }
+
+    public static Modalidad leerModalidad(){
+        int opcion;
+        System.out.println("*** MODALIDADES ***");
+
+        for (Modalidad modalidad: Modalidad.values()){
+            System.out.println(modalidad.imprimir());
         }
 
         do {
-            System.out.println("Elige el grado que vas a elegir, introduzca un numero valido dentro del rango: ");
+            System.out.println("Escoja una opcion del 1 al 2, para elegir la modalidad.");
             opcion=Entrada.entero();
-        }while (opcion>2 || opcion<0);
 
+        }while (opcion!=1 && opcion!=2);
 
-
-        switch (opcion){
-
-            case 0:
-                return Grado.GDCFGB;
-            case 1:
-                return Grado.GDCFGM;
-            default:
-                return Grado.GDCFGS;
+        if (opcion==1){
+            return Modalidad.PRESENCIAL;
+        }else {
+            return Modalidad.SEMIPRESENCIAL;
         }
 
+    }
 
 
+    public static Grado leerGrado (){
+
+        String nombre;
+        int numAnios;
+        TiposGrado tipoGrado;
+        Modalidad modalidad;
+        int numEdiciones;
+       tipoGrado=leerTiposGrado();
+
+       if (tipoGrado==TiposGrado.GRADOD){
+           System.out.println("Introduzca el nombre del gradoD: ");
+           nombre=Entrada.cadena();
+           System.out.println("Introduzca la duracion del gradoD (*** 2 o 3 años ***): ");
+           numAnios=Entrada.entero();
+           modalidad=leerModalidad();
+
+           return new GradoD(nombre,numAnios,modalidad);
+
+       }else {
+
+           System.out.println("Introduzca el nombre del gradoE: ");
+           nombre=Entrada.cadena();
+           System.out.println("Introduzca la duracion del gradoE (*** 1 año ***): ");
+           numAnios=Entrada.entero();
+           System.out.println("Introduzca el numero de ediciones del gradoE: ");
+           numEdiciones=Entrada.entero();
+
+           return new GradoE(nombre,numAnios,numEdiciones);
+
+       }
     }
 
     public static CicloFormativo leerCicloFormativo (){
@@ -177,12 +223,13 @@ public class Consola {
     public static CicloFormativo getCicloFormativoPorCodigo (){
 
         int codigo=0;
+        GradoD gradoD=new GradoD("GRADO",2,Modalidad.PRESENCIAL);
 
 
         System.out.println("Introduzca el codigo del ciclo formativo: ");
         codigo=Entrada.entero();
 
-        return new CicloFormativo(codigo,"familia profesional",Grado.GDCFGS,"ciclofor",250);
+        return new CicloFormativo(codigo,"familia profesional",gradoD,"ciclofor",250);
 
     }
 
@@ -260,11 +307,12 @@ public class Consola {
     public static Asignatura getAsignaturaPorCodigo (){
 
         String codigo;
+        GradoD gradoD=new GradoD("GRADO",2,Modalidad.PRESENCIAL);
 
         System.out.println("Introduzca el codigo de la asignatura: ");
         codigo=Entrada.cadena();
 
-        CicloFormativo cicloFormativo= new CicloFormativo(8886,"familiaprofe",Grado.GDCFGB,"nombre",8);
+        CicloFormativo cicloFormativo= new CicloFormativo(8886,"familiaprofe",gradoD,"nombre",8);
 
 
         return new Asignatura(codigo,"nombre",111,Curso.PRIMERO,3,EspecialidadProfesorado.FOL,cicloFormativo);

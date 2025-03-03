@@ -37,7 +37,7 @@ public class Asignaturas {
         List<Asignatura> copiaAs=copiaProfundaAsignaturas();
 
         if (copiaAs.isEmpty()){
-            throw new IllegalArgumentException("ERROR:No hay asignaturas matriculadas");
+            throw new IllegalArgumentException("ERROR:No hay asignaturas matriculadas, inserte una.");
         }
 
 

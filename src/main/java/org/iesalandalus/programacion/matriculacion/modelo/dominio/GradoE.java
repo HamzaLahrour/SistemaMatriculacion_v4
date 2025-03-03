@@ -13,6 +13,10 @@ public class GradoE extends Grado {
     }
 
     public void setNumEdiciones(int numEdiciones) {
+        if (numEdiciones<=0){
+            throw new IllegalArgumentException("ERROR: El número de ediciones debe ser mayor que 0.");
+        }
+
         this.numEdiciones = numEdiciones;
     }
 

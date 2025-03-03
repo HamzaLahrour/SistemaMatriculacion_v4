@@ -22,7 +22,7 @@ import java.time.LocalDate;
 
 
 public class MainApp {
-    public static final int CAPACIDAD=3;
+
 
 
     public static void main(String[] args) throws OperationNotSupportedException {

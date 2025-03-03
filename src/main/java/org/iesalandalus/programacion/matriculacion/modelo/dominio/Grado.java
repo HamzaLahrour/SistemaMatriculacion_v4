@@ -6,7 +6,7 @@ public class Grado {
     protected int numAnios;
 
     public Grado(String nombre) {
-        this.nombre = nombre;
+        setNombre(nombre);
         setIniciales();
     }
 
@@ -50,7 +50,7 @@ public class Grado {
     }
 
     public void setNumAnios(int numAnios){
-        if (numAnios<0){
+        if (numAnios<=0){
             throw new IllegalArgumentException("ERROR: El número de años de un grado debe ser mayor que 0.");
         }
         this.numAnios=numAnios;

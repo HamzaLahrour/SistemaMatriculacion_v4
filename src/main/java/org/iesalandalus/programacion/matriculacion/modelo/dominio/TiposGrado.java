@@ -9,7 +9,7 @@ public enum TiposGrado {
         this.cadenaAMostrar = cadenaAMostrar;
     }
     public String imprimir(){
-        return ordinal() +" .- "+cadenaAMostrar;
+        return (ordinal()+1) +" .- "+cadenaAMostrar;
     }
 
     @Override

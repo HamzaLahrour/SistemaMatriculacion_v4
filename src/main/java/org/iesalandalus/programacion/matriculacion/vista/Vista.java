@@ -48,7 +48,7 @@ public class Vista {
 
                     try {
                         opcion=Consola.elegirOpcion();
-                        ejecutarOpcion(opcion);
+                        opcion.ejecutar();
                     }catch (IllegalArgumentException e){
                         System.out.println(e.getMessage());
                     }
@@ -64,35 +64,7 @@ public class Vista {
         System.out.println("Vista terminada.");
     }
 
-    public void ejecutarOpcion (Opcion opcion){
 
-
-
-        switch (opcion){
-            case INSERTAR_ALUMNO -> insertarAlumno();
-            case BUSCAR_ALUMNO -> buscarAlumno();
-            case BORRAR_ALUMNO -> borrarAlumno();
-            case MOSTRAR_ALUMNOS -> mostrarAlumnos();
-            case INSERTAR_CICLO_FORMATIVO -> insertarCiclosFormativos();
-            case BUSCAR_CICLO_FORMATIVO -> buscarCicloFormartivo();
-            case BORRAR_CICLO_FORMATIVO -> borrarCicloFormativo();
-            case MOSTRAR_CICLOS_FORMATIVOS -> mostrarCiclosFormativos();
-            case INSERTAR_ASIGNATURA -> insertarAsignatura();
-            case BUSCAR_ASIGNATURA -> buscarAsignatura();
-            case BORRAR_ASIGNATURA -> borrarAsignatura();
-            case MOSTRAR_ASIGNATURAS -> mostrarAsignaturas();
-            case INSERTAR_MATRICULA -> insertarMatricula();
-            case BUSCAR_MATRICULA -> buscarMatricula();
-            case ANULAR_MATRICULA -> anularMatricula();
-            case MOSTRAR_MATRICULAS -> mostrarMatriculas();
-            case MOSTRAR_MATRICULAS_ALUMNO -> mostrarMatriculasPorAlumno();
-            case MOSTRAR_MATRICULAS_CICLO_FORMATIVO -> mostrarMatriculasPorCicloFormativo();
-            case MOSTRAR_MATRICULAS_CURSO_ACADEMICO -> mostrarMatriculasPorCursoAcademico();
-
-        }
-
-
-    }
 
     public void insertarAlumno(){
 
