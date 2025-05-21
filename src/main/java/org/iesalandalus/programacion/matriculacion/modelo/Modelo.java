@@ -4,10 +4,10 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.Matriculas;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.Alumnos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.Asignaturas;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.CiclosFormativos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.Matriculas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.List;

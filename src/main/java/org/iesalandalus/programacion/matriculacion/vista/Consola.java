@@ -3,9 +3,8 @@ package org.iesalandalus.programacion.matriculacion.vista;
 //import org.iesalandalus.programacion.matriculacion.dominio.*;
 import org.iesalandalus.programacion.matriculacion.controlador.Controlador;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.Asignaturas;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.CiclosFormativos;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;

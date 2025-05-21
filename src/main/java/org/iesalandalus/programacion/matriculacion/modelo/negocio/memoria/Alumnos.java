@@ -1,17 +1,16 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
-import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IAlumnos;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Alumnos {
+public class Alumnos implements IAlumnos {
 
 
-    //Alumno [] coleccionAlumnos;
 
     private static List <Alumno> coleccionAlumnos = new ArrayList<>();
 
@@ -20,16 +19,15 @@ public class Alumnos {
     }
 
 
-
-
-
-    /*
-    public int getTamano() {
-        return tamano;
+    @Override
+    public void comenzar(){
+        System.out.println();
     }
 
-     */
+    @Override
+    public void terminar(){
 
+    }
 
 
     private List<Alumno> copiaProfundaAlumnos(){
@@ -55,6 +53,8 @@ public class Alumnos {
         return copia;
     }
 
+
+    @Override
     public void insertar (Alumno alumno){
 
         if (!coleccionAlumnos.contains(alumno)){
@@ -64,7 +64,7 @@ public class Alumnos {
         }
 
     }
-
+    @Override
     public Alumno buscar (Alumno alumno){
         Iterator <Alumno> alumnoIterator=coleccionAlumnos.iterator();
 
@@ -79,7 +79,7 @@ public class Alumnos {
 
         return null;
     }
-
+    @Override
     public void borrar(Alumno alumno)throws OperationNotSupportedException{
 
         if (alumno==null){
