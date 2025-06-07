@@ -53,6 +53,11 @@ public class Alumnos implements IAlumnos {
         return copia;
     }
 
+    @Override
+    public int getTamano() {
+        return 0;
+    }
+
 
     @Override
     public void insertar (Alumno alumno){

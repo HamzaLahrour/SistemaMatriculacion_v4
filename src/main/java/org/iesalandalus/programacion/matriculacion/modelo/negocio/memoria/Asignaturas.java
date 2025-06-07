@@ -1,21 +1,19 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IAsignaturas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Asignaturas {
+public class Asignaturas implements IAsignaturas {
 
     private static List<Asignatura> coleccionAsignaturas = new ArrayList<>();
 
 
     public Asignaturas() {
-
-
-
 
     }
 
@@ -31,6 +29,16 @@ public class Asignaturas {
         return copiaAsignaturas;
     }
 
+    @Override
+    public void comenzar() {
+        System.out.printf("Comenzado");
+    }
+
+    @Override
+    public void terminar() {
+        System.out.printf("Cerrando");
+    }
+
     public List<Asignatura> get (){
 
         List<Asignatura> copiaAs=copiaProfundaAsignaturas();
@@ -41,6 +49,11 @@ public class Asignaturas {
 
 
         return copiaAs;
+    }
+
+    @Override
+    public int getTamano() {
+        return 0;
     }
 
     public void insertar (Asignatura asignatura)throws OperationNotSupportedException{

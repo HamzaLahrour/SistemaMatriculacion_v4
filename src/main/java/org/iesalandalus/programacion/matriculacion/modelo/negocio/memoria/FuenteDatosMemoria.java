@@ -1,9 +1,8 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria;
 
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.*;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.CiclosFormativos;
 
-public class FuenteDatosMySQL implements IFuenteDatos {
+public class FuenteDatosMemoria  implements IFuenteDatos {
 
 
     @Override

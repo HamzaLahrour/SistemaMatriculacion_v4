@@ -7,7 +7,7 @@ public enum EspecialidadProfesorado {
     SISTEMAS("SISTEMAS"),
     FOL("FOL");
 
-    String cadenaAMostrar;
+    public String cadenaAMostrar;
 
     private EspecialidadProfesorado(String cadenaAMostrar) {
         this.cadenaAMostrar = cadenaAMostrar;
@@ -24,4 +24,6 @@ public enum EspecialidadProfesorado {
                 "cadenaAMostrar='" + cadenaAMostrar + '\'' +
                 '}';
     }
+
+
 }

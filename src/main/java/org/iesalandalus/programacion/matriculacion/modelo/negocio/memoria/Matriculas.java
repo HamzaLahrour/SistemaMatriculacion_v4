@@ -4,22 +4,20 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IMatriculas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Matriculas {
+public class Matriculas implements IMatriculas {
 
      List <Matricula> coleccionMatriculas = new ArrayList<>();
 
     public Matriculas() {
 
-
     }
-
-
 
     private List<Matricula> copiaProfundaMatriculas()throws OperationNotSupportedException{
 
@@ -31,6 +29,16 @@ public class Matriculas {
         return matriculaCopia;
     }
 
+    @Override
+    public void comenzar() {
+        System.out.printf("Comenzar");
+    }
+
+    @Override
+    public void terminar() {
+        System.out.printf("Terminar");
+    }
+
     public List<Matricula> get ()throws OperationNotSupportedException{
 
        List<Matricula> copiaMa=copiaProfundaMatriculas();
@@ -38,6 +46,11 @@ public class Matriculas {
             throw new IllegalArgumentException("ERROR:No hay matriculas registradas.");
         }
         return copiaMa;
+    }
+
+    @Override
+    public int getTamano() {
+        return 0;
     }
 
     public void insertar (Matricula matricula)throws OperationNotSupportedException {

@@ -55,4 +55,8 @@ public class Grado {
         }
         this.numAnios=numAnios;
     }
+
+    public int getNumAnios() {
+        return numAnios;
+    }
 }
