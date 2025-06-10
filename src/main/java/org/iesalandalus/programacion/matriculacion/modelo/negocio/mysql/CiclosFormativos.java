@@ -17,10 +17,12 @@ public class CiclosFormativos implements ICiclosFormativos {
         comenzar();
     }
 
-    private static CiclosFormativos getInstancia() {
+    public static CiclosFormativos getInstancia() {
         if (instancia == null) {
             instancia = new CiclosFormativos();
         }
+
+
         return instancia;
     }
 
@@ -29,15 +31,39 @@ public class CiclosFormativos implements ICiclosFormativos {
         MySQL gestorBD= new MySQL();
         this.conexion= gestorBD.establecerConexion();
         if (this.conexion != null) {
-            System.out.println("✅ Conexión con la base de datos iniciada en Alumnos.");
+            System.out.println("Conexión con la base de datos iniciada en CiclosFormativos.");
         } else {
-            System.err.println("❌ No se pudo establecer la conexión en Alumnos.");
+            System.err.println("ERROR: No se pudo establecer la conexión en CiclosFormativos.");
         }
     }
 
     @Override
     public void terminar() {
+        if (conexion != null) {
+            try {
+                conexion.close();
+                System.out.println("Conexión a la base de datos cerrada correctamente.");
+            } catch (SQLException e) {
+                System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
+            }
+        } else {
+            System.out.println("ERROR: No hay ninguna conexión activa para cerrar.");
+        }
+    }
 
+    public static Grado getGrado(String tipoGrado, String nombreGrado, int numAniosGrado, String modalidad, int numEdiciones) {
+
+        if ("gradod".equalsIgnoreCase(tipoGrado)) {
+            Modalidad mod = null;
+            if (modalidad != null) {
+                mod = Modalidad.valueOf(modalidad.toUpperCase());
+            }
+            return new GradoD(nombreGrado, numAniosGrado, mod);
+        } else if ("gradoe".equalsIgnoreCase(tipoGrado)) {
+            return new GradoE(nombreGrado, numAniosGrado, numEdiciones);
+        } else {
+            throw new IllegalArgumentException("Tipo de grado no reconocido: " + tipoGrado);
+        }
     }
 
     @Override
@@ -68,7 +94,7 @@ public class CiclosFormativos implements ICiclosFormativos {
                 Grado grado = null;
 
                 if ("gradod".equalsIgnoreCase(gradoString)) {
-                    // Modalidad es enum, la lees como string y la conviertes
+
                     String modalidadStr = rs.getString("modalidad");
                     Modalidad modalidad = modalidadStr != null ? Modalidad.valueOf(modalidadStr.toUpperCase()) : null;
                     grado = new GradoD(nombreGrado, numAniosGrado, modalidad);
@@ -92,9 +118,7 @@ public class CiclosFormativos implements ICiclosFormativos {
 
     @Override
     public int getTamano() {
-        if (conexion == null) {
-            throw new IllegalStateException("No hay conexión a la base de datos.");
-        }
+
 
         final String sql = "SELECT COUNT(*) FROM cicloFormativo";
 
@@ -113,71 +137,52 @@ public class CiclosFormativos implements ICiclosFormativos {
         }
     }
 
+
+
     @Override
     public void insertar(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
-        if (conexion == null) {
-            throw new IllegalStateException("No hay conexión a la base de datos.");
-        }
         if (cicloFormativo == null) {
             throw new IllegalArgumentException("No se puede insertar un ciclo formativo nulo.");
         }
 
-        String sql = "INSERT INTO cicloFormativo(codigo, familiaProfesional, grado, nombre, horas, nombreGrado, numAniosGrado, modalidad, numEdiciones) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cicloFormativo (codigo, familiaProfesional, grado, nombre, horas, nombreGrado, numAniosGrado, modalidad, numEdiciones) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, cicloFormativo.getCodigo());
             ps.setString(2, cicloFormativo.getFamiliaProfesional());
 
-            // Para grado, asumimos que es un objeto de clase Grado (o sus derivadas)
-            // y el atributo 'grado' en la tabla es ENUM('gradod','gradoe')
-            // Por lo tanto hay que mapearlo a cadena:
-            String tipoGrado = null;
-            if (cicloFormativo.getGrado() instanceof GradoD) {
-                tipoGrado = "gradod";
-            } else if (cicloFormativo.getGrado() instanceof GradoE) {
-                tipoGrado = "gradoe";
+            Grado grado = cicloFormativo.getGrado();
+
+            if (grado instanceof GradoD gradoD) {
+                ps.setString(3, "gradod");
+                ps.setString(8, gradoD.getModalidad().name()); // modalidad
+                ps.setNull(9, Types.INTEGER); // numEdiciones
+            } else if (grado instanceof GradoE gradoE) {
+                ps.setString(3, "gradoe");
+                ps.setNull(8, Types.VARCHAR); // modalidad
+                ps.setInt(9, gradoE.getNumEdiciones());
             } else {
-                throw new IllegalArgumentException("El grado debe ser GradoD o GradoE");
+                throw new OperationNotSupportedException("Tipo de grado no soportado.");
             }
-            ps.setString(3, tipoGrado);
 
             ps.setString(4, cicloFormativo.getNombre());
             ps.setInt(5, cicloFormativo.getHoras());
-
-            // Campos relacionados con el grado:
-            ps.setString(6, cicloFormativo.getGrado().getNombre());
-            ps.setInt(7, cicloFormativo.getGrado().getNumAnios());
-
-            if (cicloFormativo.getGrado() instanceof GradoD) {
-                GradoD gradoD = (GradoD) cicloFormativo.getGrado();
-                ps.setString(8, gradoD.getModalidad().toString().toLowerCase()); // modalidad enum('presencial','semipresencial')
-                ps.setNull(9, Types.INTEGER);
-            } else if (cicloFormativo.getGrado() instanceof GradoE) {
-                GradoE gradoE = (GradoE) cicloFormativo.getGrado();
-                ps.setNull(8, Types.VARCHAR);
-                ps.setInt(9, gradoE.getNumEdiciones());
-            } else {
-                ps.setNull(8, Types.VARCHAR);
-                ps.setNull(9, Types.INTEGER);
-            }
+            ps.setString(6, grado.getNombre());
+            ps.setInt(7, grado.getNumAnios());
 
             ps.executeUpdate();
+            System.out.println("Ciclo formativo insertado correctamente.");
 
-        } catch (SQLIntegrityConstraintViolationException e) {
-            throw new OperationNotSupportedException("Ya existe un ciclo formativo con ese código.");
         } catch (SQLException e) {
-            throw new OperationNotSupportedException("Error al insertar el ciclo formativo: " + e.getMessage());
+            System.err.println("Error al insertar ciclo formativo: " + e.getMessage());
         }
     }
 
     @Override
     public CicloFormativo buscar(CicloFormativo cicloFormativo) {
-        if (conexion == null) {
-            throw new IllegalStateException("No hay conexión a la base de datos.");
-        }
         if (cicloFormativo == null) {
-            throw new IllegalArgumentException("No se puede buscar un ciclo formativo nulo.");
+            throw new NullPointerException("No se puede buscar un ciclo formativo nulo.");
         }
 
         final String sql = "SELECT * FROM cicloFormativo WHERE codigo = ?";
@@ -222,11 +227,8 @@ public class CiclosFormativos implements ICiclosFormativos {
 
     @Override
     public void borrar(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
-        if (conexion == null) {
-            throw new IllegalStateException("No hay conexión a la base de datos.");
-        }
         if (cicloFormativo == null) {
-            throw new IllegalArgumentException("No se puede borrar un ciclo formativo nulo.");
+            throw new NullPointerException("No se puede borrar un ciclo formativo nulo.");
         }
 
         final String sql = "DELETE FROM cicloFormativo WHERE codigo = ?";
@@ -237,11 +239,11 @@ public class CiclosFormativos implements ICiclosFormativos {
             int filasAfectadas = ps.executeUpdate();
 
             if (filasAfectadas == 0) {
-                throw new OperationNotSupportedException("No existe ningún ciclo formativo con ese código.");
+                throw new OperationNotSupportedException("ERROR: No existe ningún ciclo formativo con ese código.");
             }
 
         } catch (SQLException e) {
-            throw new OperationNotSupportedException("Error al borrar el ciclo formativo: " + e.getMessage());
+            throw new OperationNotSupportedException("ERROR: Al borrar el ciclo formativo: " + e.getMessage());
         }
     }
 }

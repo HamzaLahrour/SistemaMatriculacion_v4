@@ -76,12 +76,15 @@ public class Matriculas implements IMatriculas {
 
     public void borrar (Matricula matricula)throws OperationNotSupportedException{
 
+
         if (coleccionMatriculas.contains(matricula)){
             coleccionMatriculas.remove(matricula);
         }else {
             throw new OperationNotSupportedException("ERROR: No existe ninguna matrícula como la indicada.");
-
         }
+
+
+
 
     }
 

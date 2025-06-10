@@ -3,6 +3,8 @@ package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Matricula {
@@ -15,7 +17,7 @@ public class Matricula {
 
 
     private Alumno alumno;
-    private Asignatura[] coleccionAsignaturas;
+    private List<Asignatura> coleccionAsignaturas;
 
     int idMatricula;
     String cursoAcademico;
@@ -128,7 +130,7 @@ public class Matricula {
         return alumno;
     }
 
-    public void setColeccionAsignaturas(Asignatura[] coleccionAsignaturas)throws OperationNotSupportedException{
+    public void setColeccionAsignaturas(List<Asignatura> coleccionAsignaturas)throws OperationNotSupportedException{
 
         if (coleccionAsignaturas == null) {
             throw new NullPointerException("ERROR: La lista de asignaturas de una matrícula no puede ser nula.");
@@ -147,14 +149,14 @@ public class Matricula {
 
     }
 
-    public Asignatura[] getColeccionAsignaturas() {
+    public List<Asignatura> getColeccionAsignaturas() {
 
 
         return coleccionAsignaturas;
     }
 
 
-    private boolean superaMaximoNumeroHoras(Asignatura[] asignaturasMatricula) {
+    private boolean superaMaximoNumeroHoras(List<Asignatura> asignaturasMatricula) {
 
         int horasTotal = 0;
         for (Asignatura asignatura : asignaturasMatricula) {
@@ -177,7 +179,7 @@ public class Matricula {
     }
 
 
-    public Matricula(int idMatricula, String cursoAcademico, LocalDate fechaMatriculacion, Alumno alumno, Asignatura[] coleccionAsignaturas) throws OperationNotSupportedException {
+    public Matricula(int idMatricula, String cursoAcademico, LocalDate fechaMatriculacion, Alumno alumno, List<Asignatura> coleccionAsignaturas) throws OperationNotSupportedException {
 
 
 

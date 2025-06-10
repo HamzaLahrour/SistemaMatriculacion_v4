@@ -35,15 +35,24 @@ public class Alumnos implements IAlumnos {
         MySQL gestorBD= new MySQL();
         this.conexion= gestorBD.establecerConexion();
         if (this.conexion != null) {
-            System.out.println("✅ Conexión con la base de datos iniciada en Alumnos.");
+            System.out.println("Conexión con la base de datos iniciada en Alumnos.");
         } else {
-            System.err.println("❌ No se pudo establecer la conexión en Alumnos.");
+            System.err.println("ERROR: No se pudo establecer la conexión en Alumnos.");
         }
     }
 
     @Override
     public void terminar() {
-
+        if (conexion != null) {
+            try {
+                conexion.close();
+                System.out.println("Conexión a la base de datos cerrada correctamente.");
+            } catch (SQLException e) {
+                System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
+            }
+        } else {
+            System.out.println("ERROR: No hay ninguna conexión activa para cerrar.");
+        }
     }
 
     @Override

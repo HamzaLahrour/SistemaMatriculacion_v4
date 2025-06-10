@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.matriculacion.vista;
 
 import org.iesalandalus.programacion.matriculacion.controlador.Controlador;
+import org.iesalandalus.programacion.matriculacion.modelo.FactoriaFuenteDatos;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
@@ -73,6 +74,10 @@ public class Vista {
         try {
             alumno=Consola.leerAlumno();
 
+            if (controlador.getAlumnos().contains(alumno)){
+                throw new IllegalArgumentException("ERROR:El alumno ya ha sido introducido.");
+            }
+
             controlador.insertar(alumno);
             System.out.println("Alumno insertado correctamente!");
 
@@ -88,6 +93,10 @@ public class Vista {
 
 
         alumno=Consola.getAlumnoPorDni();
+
+        if (!controlador.getAlumnos().contains(alumno)){
+            throw new IllegalArgumentException("ERROR:El alumno introducido no existe.");
+        }
 
 
         System.out.println(controlador.buscar(alumno));
@@ -119,6 +128,7 @@ public class Vista {
 
         System.out.println("*** LISTADO DE ALUMNOS ***");
 
+
         List<Alumno> alumnosOrdenados =controlador.getAlumnos().stream()
                 .sorted(Comparator.comparing(Alumno::getNombre)).
                 toList();
@@ -143,6 +153,12 @@ public class Vista {
 
         try {
             asignatura=Consola.leerAsignatura(cicloFormativo1);
+
+            //Valida base de datos
+            if (controlador.getAsignaturas().contains(asignatura)){
+                throw new IllegalArgumentException("ERROR:La asignatura ya ha sido introducida.");
+            }
+
             controlador.insertar(asignatura);
             System.out.println("Asignatura insertada correctamente!");
         }catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e){
@@ -206,6 +222,9 @@ public class Vista {
 
         try {
 
+            if (controlador.getCiclosFormativos().contains(cicloFormativo)){
+                throw new IllegalArgumentException("ERROR:El ciclo formativo ya existe.");
+            }
             controlador.insertar(cicloFormativo);
             System.out.println("CIclo formativo insertado correctamente!");
 
@@ -222,7 +241,11 @@ public class Vista {
 
         CicloFormativo cicloFormativo;
         cicloFormativo=Consola.getCicloFormativoPorCodigo();
-        System.out.println(controlador.buscar(cicloFormativo));
+       if (controlador.buscar(cicloFormativo)==null){
+           throw new IllegalArgumentException("ERROR: No se encontró ningun cicloFormativo con ese codigo.");
+       }else {
+           System.out.println(controlador.buscar(cicloFormativo));
+       }
     }
 
     public void borrarCicloFormativo (){
@@ -264,6 +287,7 @@ public class Vista {
 
         List<Asignatura> asignaturas= controlador.getAsignaturas();
 
+
         mostrarAlumnos();
 
         try {
@@ -271,6 +295,10 @@ public class Vista {
             alumno1=controlador.buscar(alumno);
 
             matricula=Consola.leerMatricula(alumno1,asignaturas);
+            if (controlador.getMatriculas().contains(matricula)){
+                throw new IllegalArgumentException("ERROR:La matricula introducida ya existe.");
+            }
+
             controlador.insertar(matricula);
             System.out.println("Matricula insertada correctamente!");
 
@@ -324,10 +352,19 @@ public class Vista {
 
         try {
 
+            /*
+            Debido a que no se, si realmente debemos eliminar o actualizar, yo lo he hecho de esta forma:
+             */
+
+
+            // En este método he eliminado la lógica que pedía y asignaba la fecha de anulación a la matrícula.
+            // Ahora, cuando se quiere anular una matrícula, directamente se llama al método borrar.
+            // Este método borrar funciona de forma polimórfica: si la fuente de datos es memoria, elimina la matrícula de la colección en memoria;
+            // si la fuente es MySQL, borra la matrícula y sus asignaturas asociadas de la base de datos.
+
             matricula=Consola.getMatriculaPorIdentificador();
-            fechaAnulacion=Consola.leerFecha("Introduzca la fecha en la que has anulado la matricula en formato dd/MM/yyy: ");
             matricula2= controlador.buscar(matricula);
-            matricula2.setFechaAnulacion(fechaAnulacion);
+            controlador.borrar(matricula2);
 
             System.out.println("Matricula anulada correctamente!.");
 
@@ -363,6 +400,8 @@ public class Vista {
 
         Alumno alumno;
         alumno=Consola.getAlumnoPorDni();
+
+
         for (Matricula matricula : controlador.getMatriculas(alumno)){
 
             System.out.println(matricula);
@@ -394,6 +433,10 @@ public class Vista {
         CicloFormativo cicloFormativo;
 
         cicloFormativo=Consola.getCicloFormativoPorCodigo();
+
+        if (!controlador.getCiclosFormativos().contains(cicloFormativo)){
+            throw new IllegalArgumentException("ERROR: El cicloFormativo introducido no existe.");
+        }
 
         for (Matricula matricula : controlador.getMatriculas(cicloFormativo)){
             System.out.println(matricula);

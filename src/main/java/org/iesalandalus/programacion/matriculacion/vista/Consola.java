@@ -10,6 +10,7 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno.FORMATO_FECHA;
@@ -327,7 +328,7 @@ public class Consola {
 
     }
 
-    public static boolean asignaturaYaMatriculada (Asignatura [] asignaturasMatricula, Asignatura asignatura){
+    public static boolean asignaturaYaMatriculada (List<Asignatura> asignaturasMatricula, Asignatura asignatura){
 
             for (Asignatura a: asignaturasMatricula){
                  if (a!=null && a.equals(asignatura)){
@@ -351,7 +352,7 @@ public class Consola {
         Alumno alumno1;
         Alumno alumno2;
         CiclosFormativos ciclosFormativos = new CiclosFormativos();
-        Asignatura [] coleccionAsignaturas;
+        List<Asignatura> coleccionAsignaturas;
         Controlador controlador=null;
 
         coleccionAsignaturas=Consola.elegirAsignaturasMatricula(asignaturas);
@@ -380,7 +381,7 @@ public class Consola {
         fechaMatriculacion=LocalDate.now();
         Alumno alumno = new Alumno("nombre","31305842J","hamzahamza2@gmail.com","674123987",LocalDate.of(2004,10,21));
 
-        Asignatura [] coleccionAsignaturas = new Asignatura[6];
+        List<Asignatura> coleccionAsignaturas = new ArrayList<>();
 
         System.out.println("Introduzca el identificador de la matricula para eliminar/buscar: ");
         idMatricula=Entrada.entero();
@@ -389,59 +390,53 @@ public class Consola {
         return new Matricula(idMatricula,"24-25",fechaMatriculacion,alumno,coleccionAsignaturas);
     }
 
-    public static Asignatura [] elegirAsignaturasMatricula(List<Asignatura> asignaturas){
-        int numeroAsignaturas=0;
-        Asignatura [] coleccionAsignaturas;
-        Asignaturas asignaturas1 = new Asignaturas();
-        Asignatura asignatura1=null;
-        Asignatura asignatura;
+    public static List<Asignatura> elegirAsignaturasMatricula(List<Asignatura> asignaturas){
+        int numeroAsignaturas = 0;
+        List<Asignatura> coleccionAsignaturas = new ArrayList<>(); // Usamos una lista dinámica
 
+        System.out.println("Introduzca el número de asignaturas de la matrícula: ");
+        numeroAsignaturas = Entrada.entero();
 
-
-
-        System.out.println("Introduzca el numero de asignaturas de asignaturas de la matricula: ");
-        numeroAsignaturas=Entrada.entero();
-        if (numeroAsignaturas<=0){
+        // Validaciones del número de asignaturas
+        if (numeroAsignaturas <= 0) {
             throw new IllegalArgumentException("ERROR: No te puedes matricular con 0 asignaturas.");
-        } else if (numeroAsignaturas>10) {
-            throw new IllegalArgumentException("ERROR: El numero maximo de asignaturas por matricula son 10.");
+        } else if (numeroAsignaturas > 10) {
+            throw new IllegalArgumentException("ERROR: El número máximo de asignaturas por matrícula son 10.");
         }
 
-
-
-
+        // Mostrar las asignaturas disponibles
         Consola.mostrarAsignaturas(asignaturas);
-        coleccionAsignaturas=new Asignatura[numeroAsignaturas];
 
-        for (int i=0; i<numeroAsignaturas;i++){
+        // Seleccionar las asignaturas
+        for (int i = 0; i < numeroAsignaturas; i++) {
+            System.out.println("Introduzca la asignatura " + (i + 1) + ": ");
 
-            System.out.println("Introduzca la asignatura: " + (i+1));
+            Asignatura asignatura = getAsignaturaPorCodigo();
 
-            asignatura=getAsignaturaPorCodigo();
-
-            for (Asignatura a : asignaturas){
-
-                while (asignaturaYaMatriculada(coleccionAsignaturas,asignatura)){
-                    System.out.println("Introduzca el codigo de una asignatura sin matricular.");
-                    asignatura=getAsignaturaPorCodigo();
-                }
-
-
-                if (a.equals(asignatura)){
-                    asignatura1=a;
-                }
-
+            // Validar si la asignatura ya está en la lista de asignaturas seleccionadas
+            while (asignaturaYaMatriculada(coleccionAsignaturas, asignatura)) {
+                System.out.println("Introduzca el código de una asignatura sin matricular.");
+                asignatura = getAsignaturaPorCodigo();
             }
 
-            coleccionAsignaturas[i]=asignatura1;
+            // Verificar si la asignatura existe en la lista de asignaturas disponibles
+            Asignatura asignaturaExistente = null;
+            for (Asignatura a : asignaturas) {
+                if (a.equals(asignatura)) {
+                    asignaturaExistente = a;
+                    break;
+                }
+            }
 
+            if (asignaturaExistente == null) {
+                throw new IllegalArgumentException("ERROR: La asignatura seleccionada no existe.");
+            }
 
+            // Agregar la asignatura a la lista
+            coleccionAsignaturas.add(asignaturaExistente);
         }
 
-
-
         return coleccionAsignaturas;
-
 
     }
 

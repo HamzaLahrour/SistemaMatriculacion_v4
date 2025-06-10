@@ -32,22 +32,32 @@ public class Asignaturas implements IAsignaturas {
         MySQL gestorBD= new MySQL();
         this.conexion= gestorBD.establecerConexion();
         if (this.conexion != null) {
-            System.out.println("✅ Conexión con la base de datos iniciada en Alumnos.");
+            System.out.println("Conexión con la base de datos iniciada en Asignaturas");
         } else {
-            System.err.println("❌ No se pudo establecer la conexión en Alumnos.");
+            System.err.println("ERROR: No se pudo establecer la conexión en Asignaturas.");
         }
     }
 
     @Override
     public void terminar() {
-
+        if (conexion != null) {
+            try {
+                conexion.close();
+                System.out.println("Conexión a la base de datos cerrada correctamente.");
+            } catch (SQLException e) {
+                System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
+            }
+        } else {
+            System.out.println("ERROR: No hay ninguna conexión activa para cerrar.");
+        }
     }
 
     @Override
     public List<Asignatura> get() {
         List<Asignatura> listaAsignaturas = new ArrayList<>();
         String sql = "SELECT a.codigo, a.nombre, a.horasAnuales, a.curso, a.horasDesdoble, a.especialidadProfesorado, " +
-                "c.codigo AS cicloCodigo, c.familiaProfesional, c.gradoNombre, c.gradoNumAnios, c.gradoTipo, c.nombre AS cicloNombre, c.horas " +
+                "c.codigo AS cicloCodigo, c.familiaProfesional, c.grado, c.nombre AS cicloNombre, c.horas AS cicloHoras, " +
+                "c.nombreGrado, c.numAniosGrado, c.modalidad, c.numEdiciones " +
                 "FROM asignatura a " +
                 "JOIN cicloFormativo c ON a.codigoCicloFormativo = c.codigo " +
                 "ORDER BY a.nombre";
@@ -67,50 +77,31 @@ public class Asignaturas implements IAsignaturas {
                 // Datos ciclo formativo
                 int codigoCiclo = rs.getInt("cicloCodigo");
                 String familiaProfesional = rs.getString("familiaProfesional");
-                String gradoNombre = rs.getString("gradoNombre");
-                int gradoNumAnios = rs.getInt("gradoNumAnios");
-                String gradoTipo = rs.getString("gradoTipo");
+                String gradoStr = rs.getString("grado");
+                String nombreGrado = rs.getString("nombreGrado");
+                int numAniosGrado = rs.getInt("numAniosGrado");
+                String modalidadStr = rs.getString("modalidad");
+                int numEdiciones = rs.getInt("numEdiciones");
                 String cicloNombre = rs.getString("cicloNombre");
-                int horasCiclo = rs.getInt("horas");
+                int cicloHoras = rs.getInt("cicloHoras");
 
-                // Convertir cursoStr a enum Curso
-                Curso curso = null;
-                if ("primero".equalsIgnoreCase(cursoStr)) {
-                    curso = Curso.PRIMERO;
-                } else if ("segundo".equalsIgnoreCase(cursoStr)) {
-                    curso = Curso.SEGUNDO;
+                // Enums
+                Curso curso = Curso.valueOf(cursoStr.toUpperCase());
+                EspecialidadProfesorado especialidad = EspecialidadProfesorado.valueOf(especialidadStr.toUpperCase());
+
+                // Grado
+                Grado grado;
+                if ("GRADOD".equalsIgnoreCase(gradoStr)) {
+                    Modalidad modalidad = Modalidad.valueOf(modalidadStr.toUpperCase());
+                    grado = new GradoD(nombreGrado, numAniosGrado, modalidad);
+                } else if ("GRADOE".equalsIgnoreCase(gradoStr)) {
+                    grado = new GradoE(nombreGrado, numAniosGrado, numEdiciones);
                 } else {
-                    throw new SQLException("Curso desconocido: " + cursoStr);
+                    throw new SQLException("Tipo de grado desconocido: " + gradoStr);
                 }
 
-                // Convertir especialidadStr a enum EspecialidadProfesorado
-                EspecialidadProfesorado especialidad = null;
-                if ("informatica".equalsIgnoreCase(especialidadStr)) {
-                    especialidad = EspecialidadProfesorado.INFORMATICA;
-                } else if ("sistemas".equalsIgnoreCase(especialidadStr)) {
-                    especialidad = EspecialidadProfesorado.SISTEMAS;
-                } else if ("fol".equalsIgnoreCase(especialidadStr)) {
-                    especialidad = EspecialidadProfesorado.FOL;
-                } else {
-                    throw new SQLException("Especialidad desconocida: " + especialidadStr);
-                }
+                CicloFormativo cicloFormativo = new CicloFormativo(codigoCiclo, familiaProfesional, grado, cicloNombre, cicloHoras);
 
-                // Construir objeto Grado según gradoTipo (ajusta si tienes más info)
-                Grado grado = null;
-                if ("GradoD".equalsIgnoreCase(gradoTipo)) {
-                    // Por ejemplo, si tienes modalidad en BD puedes leerla aquí
-                    // Suponemos modalidad por defecto para ejemplo
-                    grado = new GradoD(gradoNombre, gradoNumAnios, Modalidad.PRESENCIAL);
-                } else if ("GradoE".equalsIgnoreCase(gradoTipo)) {
-                    grado = new GradoE(gradoNombre, gradoNumAnios, 1); // Ajusta el número de ediciones según tu BD
-                } else {
-                    throw new SQLException("Tipo de grado desconocido: " + gradoTipo);
-                }
-
-                // Crear ciclo formativo completo
-                CicloFormativo cicloFormativo = new CicloFormativo(codigoCiclo, familiaProfesional, grado, cicloNombre, horasCiclo);
-
-                // Crear asignatura con todos sus datos
                 Asignatura asignatura = new Asignatura(codigo, nombre, horasAnuales, curso, horasDesdoble, especialidad, cicloFormativo);
 
                 listaAsignaturas.add(asignatura);
@@ -134,17 +125,18 @@ public class Asignaturas implements IAsignaturas {
         String sql = "INSERT INTO asignatura (codigo, nombre, horasAnuales, curso, horasDesdoble, especialidadProfesorado, codigoCicloFormativo) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
+            // Configuramos los parámetros de la consulta
             stmt.setString(1, asignatura.getCodigo());
             stmt.setString(2, asignatura.getNombre());
             stmt.setInt(3, asignatura.getHorasAnuales());
-            stmt.setString(4, asignatura.getCurso().name());  // Asumiendo que Curso es enum
+            stmt.setString(4, asignatura.getCurso().name());  // Enum 'curso' convertido a String
             stmt.setInt(5, asignatura.getHorasDesdoble());
-            stmt.setString(6, asignatura.getEspecialidadProfesorado().name());  // Asumiendo que EspecialidadProfesorado es enum
-            stmt.setInt(7, asignatura.getCicloFormativo().getCodigo());
+            stmt.setString(6, asignatura.getEspecialidadProfesorado().name());  // Enum 'especialidadProfesorado' convertido a String
+            stmt.setInt(7, asignatura.getCicloFormativo().getCodigo());  // Código del ciclo formativo (clave foránea)
 
+            // Ejecutamos la consulta
             int filas = stmt.executeUpdate();
 
             if (filas > 0) {
@@ -154,8 +146,9 @@ public class Asignaturas implements IAsignaturas {
             }
 
         } catch (SQLException e) {
+            // Manejamos errores de SQL
             System.err.println("Error al insertar asignatura: " + e.getMessage());
-            e.printStackTrace();
+
         }
     }
 
@@ -248,7 +241,7 @@ public class Asignaturas implements IAsignaturas {
         }
     }
 
-    public EspecialidadProfesorado getEspecialidadProfesoradoDesdeBD(String codigoAsignatura) throws SQLException {
+    public EspecialidadProfesorado getEspecialidadProfesorado(String codigoAsignatura) throws SQLException {
         String sql = "SELECT especialidadProfesorado FROM asignatura WHERE codigo = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, codigoAsignatura);
@@ -275,7 +268,7 @@ public class Asignaturas implements IAsignaturas {
         }
     }
 
-    public Curso getCursoDesdeBD(String codigoAsignatura) throws SQLException {
+    public Curso getCurso(String codigoAsignatura) throws SQLException {
         Curso curso = null;
         String sql = "SELECT curso FROM asignatura WHERE codigo = ?";
 

@@ -1,7 +1,6 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.*;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.CiclosFormativos;
 
 public class FuenteDatosMySQL implements IFuenteDatos {
 

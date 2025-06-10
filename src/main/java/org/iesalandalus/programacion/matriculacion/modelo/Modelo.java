@@ -4,6 +4,7 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.*;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.Alumnos;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.Asignaturas;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria.CiclosFormativos;
@@ -15,25 +16,69 @@ import java.util.List;
 public class Modelo {
 
 
-    private static Alumnos alumnos;
-    private static Asignaturas asignaturas;
-    private static CiclosFormativos ciclosFormativos;
-    private static Matriculas matriculas;
+    //private static Alumnos alumnos;
+    //private static Asignaturas asignaturas;
+    //private static CiclosFormativos ciclosFormativos;
+    //private static Matriculas matriculas;
+    private IFuenteDatos fuenteDatos;
 
+    private IAlumnos alumnos;
+    private IAsignaturas asignaturas;
+    private ICiclosFormativos ciclosFormativos;
+    private IMatriculas matriculas;
+
+    public Modelo(FactoriaFuenteDatos factoriaFuenteDatos){
+        if (factoriaFuenteDatos == null) {
+            throw new IllegalArgumentException("ERROR: La factoría de fuente de datos no puede ser nula.");
+        }
+        // Se establece la fuente de datos utilizando la factoría
+        setFuenteDatos(factoriaFuenteDatos.crear());
+    }
+
+    private void setFuenteDatos(IFuenteDatos fuenteDatos){
+        if (fuenteDatos == null) {
+            throw new NullPointerException("ERROR: La fuente de datos no puede ser nula.");
+        }
+        this.fuenteDatos = fuenteDatos;
+    }
 
     public void comenzar (){
 
-        alumnos=new Alumnos();
-        asignaturas= new Asignaturas();
-        ciclosFormativos=new CiclosFormativos();
-        matriculas=new Matriculas();
+        if (fuenteDatos == null) {
+            throw new IllegalStateException("ERROR: La fuente de datos no está configurada.");
+        }
+
+        // Crear las colecciones desde la fuente de datos
+        alumnos = fuenteDatos.crearAlumnos();
+        asignaturas = fuenteDatos.crearAsignaturas();
+        ciclosFormativos = fuenteDatos.crearCiclosFormativos();
+        matriculas = fuenteDatos.crearMatriculas();
+
+        //Metodo comenzar de cada coleccion
+        alumnos.comenzar();
+        asignaturas.comenzar();
+        ciclosFormativos.comenzar();
+        matriculas.comenzar();
 
     }
 
 
     public void terminar (){
-        System.out.println("El modelo ha terminado");
+        if (alumnos != null) {
+            alumnos.terminar();
+        }
+        if (asignaturas != null) {
+            asignaturas.terminar();
+        }
+        if (ciclosFormativos != null) {
+            ciclosFormativos.terminar();
+        }
+        if (matriculas != null) {
+            matriculas.terminar();
+        }
     }
+
+
     public void insertar(Alumno alumno)throws OperationNotSupportedException {
         alumnos.insertar(alumno);
     }
