@@ -43,7 +43,7 @@ public class Asignaturas implements IAsignaturas {
         if (conexion != null) {
             try {
                 conexion.close();
-                System.out.println("Conexión a la base de datos cerrada correctamente.");
+                System.out.println("Conexión a la base de datos en Asignaturas cerrada correctamente.");
             } catch (SQLException e) {
                 System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
             }
@@ -117,11 +117,28 @@ public class Asignaturas implements IAsignaturas {
 
     @Override
     public int getTamano() {
-        return 0;
+        int cantidad = 0;
+        String sql = "SELECT COUNT(*) AS total FROM asignatura";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                cantidad = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener el tamaño: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return cantidad;
     }
 
     @Override
     public void insertar(Asignatura asignatura) throws OperationNotSupportedException {
+
+        if (asignatura==null){
+            throw new NullPointerException("ERROR: La asignatura introducida no puede ser nula.");
+        }
+
         String sql = "INSERT INTO asignatura (codigo, nombre, horasAnuales, curso, horasDesdoble, especialidadProfesorado, codigoCicloFormativo) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -147,7 +164,9 @@ public class Asignaturas implements IAsignaturas {
 
         } catch (SQLException e) {
             // Manejamos errores de SQL
-            System.err.println("Error al insertar asignatura: " + e.getMessage());
+            if (e.getErrorCode() == 1062 || (e.getMessage() != null && e.getMessage().contains("Duplicate entry"))) {
+                System.err.println("ERROR: Ya existe una asignatura con ese código.");
+            }
 
         }
     }

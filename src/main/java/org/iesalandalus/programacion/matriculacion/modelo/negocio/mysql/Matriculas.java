@@ -44,7 +44,7 @@ public class Matriculas implements IMatriculas {
         if (conexion != null) {
             try {
                 conexion.close();
-                System.out.println("Conexión a la base de datos cerrada correctamente.");
+                System.out.println("Conexión a la base de datos cerrada en Matriculas correctamente.");
             } catch (SQLException e) {
                 System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
             }
@@ -170,7 +170,7 @@ public class Matriculas implements IMatriculas {
                     EspecialidadProfesorado especialidad = EspecialidadProfesorado.valueOf(rs.getString("especialidadProfesorado").toUpperCase());
                     Curso curso = Curso.valueOf(rs.getString("curso").toUpperCase());
 
-                    // Construir Asignatura
+                    // Construimos el objeto Asignatura
                     Asignatura asignatura = new Asignatura(
                             rs.getString("codigo"),
                             rs.getString("nombre"),
@@ -235,7 +235,9 @@ public class Matriculas implements IMatriculas {
             }
 
         } catch (SQLException e) {
-            throw new OperationNotSupportedException("ERROR: No se pudo insertar la matrícula. " + e.getMessage());
+            if (e.getErrorCode() == 1062 || (e.getMessage() != null && e.getMessage().contains("Duplicate entry"))) {
+                throw new OperationNotSupportedException("ERROR: Ya existe una matrícula con ese identificador.");
+            }
         }
 
     }
@@ -299,8 +301,8 @@ public class Matriculas implements IMatriculas {
 
     @Override
     public void borrar(Matricula matricula) throws OperationNotSupportedException {
-        if (matricula == null || matricula.getIdMatricula() <= 0) {
-            throw new IllegalArgumentException("ERROR: La matrícula proporcionada es inválida.");
+        if (matricula==null) {
+            throw new NullPointerException("ERROR: La matrícula no puede ser nula.");
         }
 
         String sql = "DELETE FROM matricula WHERE idMatricula = ?";
@@ -323,7 +325,7 @@ public class Matriculas implements IMatriculas {
     @Override
     public List<Matricula> get(Alumno alumno) {
         if (alumno == null) {
-            throw new IllegalArgumentException("ERROR: El alumno pasado como parámetro no puede ser nulo.");
+            throw new NullPointerException("ERROR: El alumno pasado como parámetro no puede ser nulo.");
         }
 
         List<Matricula> matriculas = new ArrayList<>();
@@ -367,8 +369,8 @@ public class Matriculas implements IMatriculas {
 
     @Override
     public List<Matricula> get(String cursoAcademico) {
-        if (cursoAcademico == null || cursoAcademico.isBlank()) {
-            throw new IllegalArgumentException("ERROR: El curso académico proporcionado no puede ser nulo ni vacío.");
+        if (cursoAcademico == null) {
+            throw new NullPointerException("ERROR: El curso académico proporcionado no puede ser nulo.");
         }
 
         List<Matricula> matriculas = new ArrayList<>();
@@ -460,10 +462,10 @@ public class Matriculas implements IMatriculas {
 
                     Alumno alumno = new Alumno(nombreAlumno, dni, correo, telefono, fechaNacimiento);
 
-                    // Recuperar las asignaturas asociadas
+                    // Recuperamos las asignaturas asociadas
                     List<Asignatura> asignaturas = getAsignaturasMatricula(idMatricula);
 
-                    // Crear objeto Matricula
+                    // Creamos el objeto Matricula
                     Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion, alumno, asignaturas);
                     if (fechaAnulacion != null) {
                         matricula.setFechaAnulacion(fechaAnulacion);

@@ -20,10 +20,6 @@ public class MySQL {
 
     public Connection establecerConexion(){
 
-
-
-
-
         String url = "jdbc:mysql://" + HOST + ":3306/" + ESQUEMA;
         try {
             conexion = DriverManager.getConnection(url, USUARIO, CONTRASEÑA);

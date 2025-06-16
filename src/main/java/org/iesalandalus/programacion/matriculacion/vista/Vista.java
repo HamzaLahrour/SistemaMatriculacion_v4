@@ -74,10 +74,6 @@ public class Vista {
         try {
             alumno=Consola.leerAlumno();
 
-            if (controlador.getAlumnos().contains(alumno)){
-                throw new IllegalArgumentException("ERROR:El alumno ya ha sido introducido.");
-            }
-
             controlador.insertar(alumno);
             System.out.println("Alumno insertado correctamente!");
 
@@ -154,11 +150,6 @@ public class Vista {
         try {
             asignatura=Consola.leerAsignatura(cicloFormativo1);
 
-            //Valida base de datos
-            if (controlador.getAsignaturas().contains(asignatura)){
-                throw new IllegalArgumentException("ERROR:La asignatura ya ha sido introducida.");
-            }
-
             controlador.insertar(asignatura);
             System.out.println("Asignatura insertada correctamente!");
         }catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e){
@@ -222,9 +213,6 @@ public class Vista {
 
         try {
 
-            if (controlador.getCiclosFormativos().contains(cicloFormativo)){
-                throw new IllegalArgumentException("ERROR:El ciclo formativo ya existe.");
-            }
             controlador.insertar(cicloFormativo);
             System.out.println("CIclo formativo insertado correctamente!");
 
@@ -295,9 +283,6 @@ public class Vista {
             alumno1=controlador.buscar(alumno);
 
             matricula=Consola.leerMatricula(alumno1,asignaturas);
-            if (controlador.getMatriculas().contains(matricula)){
-                throw new IllegalArgumentException("ERROR:La matricula introducida ya existe.");
-            }
 
             controlador.insertar(matricula);
             System.out.println("Matricula insertada correctamente!");
@@ -400,12 +385,15 @@ public class Vista {
 
         Alumno alumno;
         alumno=Consola.getAlumnoPorDni();
+        List<Matricula> matriculas = controlador.getMatriculas(alumno);
 
-
-        for (Matricula matricula : controlador.getMatriculas(alumno)){
-
-            System.out.println(matricula);
-
+        if (matriculas.isEmpty()) {
+            System.out.println("El alumno con DNI " + alumno.getDni() + " existe pero todavía no está matriculado.");
+        } else {
+            System.out.println("Matrículas del alumno " + alumno.getDni() + ":");
+            for (Matricula matricula : matriculas) {
+                System.out.println(matricula);
+            }
         }
 
 
@@ -420,8 +408,15 @@ public class Vista {
         System.out.println("Introduce el curso academico para realizar la busqueda: ");
         cursoAcademico= Entrada.cadena();
 
-        for (Matricula matricula : controlador.getMatriculas(cursoAcademico)){
-            System.out.println(matricula);
+        List<Matricula> matriculas = controlador.getMatriculas(cursoAcademico);
+
+        if (matriculas.isEmpty()) {
+            System.out.println("No existen matrículas para el curso académico " + cursoAcademico + ".");
+        } else {
+            System.out.println("Matrículas del curso académico " + cursoAcademico + ":");
+            for (Matricula matricula : matriculas) {
+                System.out.println(matricula);
+            }
         }
     }
 

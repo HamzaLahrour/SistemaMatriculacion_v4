@@ -42,7 +42,7 @@ public class CiclosFormativos implements ICiclosFormativos {
         if (conexion != null) {
             try {
                 conexion.close();
-                System.out.println("Conexión a la base de datos cerrada correctamente.");
+                System.out.println("Conexión a la base de datos en CiclosFormativos cerrada correctamente.");
             } catch (SQLException e) {
                 System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
             }
@@ -142,7 +142,7 @@ public class CiclosFormativos implements ICiclosFormativos {
     @Override
     public void insertar(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
         if (cicloFormativo == null) {
-            throw new IllegalArgumentException("No se puede insertar un ciclo formativo nulo.");
+            throw new NullPointerException("ERROR: No se puede insertar un ciclo formativo nulo.");
         }
 
         String sql = "INSERT INTO cicloFormativo (codigo, familiaProfesional, grado, nombre, horas, nombreGrado, numAniosGrado, modalidad, numEdiciones) " +
@@ -175,14 +175,16 @@ public class CiclosFormativos implements ICiclosFormativos {
             System.out.println("Ciclo formativo insertado correctamente.");
 
         } catch (SQLException e) {
-            System.err.println("Error al insertar ciclo formativo: " + e.getMessage());
+            if (e.getErrorCode() == 1062 || (e.getMessage() != null && e.getMessage().contains("Duplicate entry"))) {
+                System.err.println("ERROR: Ya existe un ciclo formativo con ese código.");
+            }
         }
     }
 
     @Override
     public CicloFormativo buscar(CicloFormativo cicloFormativo) {
         if (cicloFormativo == null) {
-            throw new NullPointerException("No se puede buscar un ciclo formativo nulo.");
+            throw new NullPointerException("ERROR:El ciclo formativo no puede ser nulo.");
         }
 
         final String sql = "SELECT * FROM cicloFormativo WHERE codigo = ?";
@@ -228,7 +230,7 @@ public class CiclosFormativos implements ICiclosFormativos {
     @Override
     public void borrar(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
         if (cicloFormativo == null) {
-            throw new NullPointerException("No se puede borrar un ciclo formativo nulo.");
+            throw new NullPointerException("ERROR: No se puede borrar un ciclo formativo nulo.");
         }
 
         final String sql = "DELETE FROM cicloFormativo WHERE codigo = ?";

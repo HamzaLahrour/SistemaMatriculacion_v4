@@ -43,16 +43,23 @@ public class Alumnos implements IAlumnos {
 
     @Override
     public void terminar() {
+        /*
         if (conexion != null) {
             try {
                 conexion.close();
-                System.out.println("Conexión a la base de datos cerrada correctamente.");
+                System.out.println("Conexión a la base de datos en Alumnos cerrada correctamente.");
             } catch (SQLException e) {
                 System.err.println("ERROR: No se pudo cerrar la conexión a la base de datos: " + e.getMessage());
             }
         } else {
             System.out.println("ERROR: No hay ninguna conexión activa para cerrar.");
         }
+
+         */
+
+        MySQL gestorBD= new MySQL();
+
+        gestorBD.cerrarConexion();
     }
 
     @Override
@@ -104,6 +111,21 @@ public class Alumnos implements IAlumnos {
 
     @Override
     public void insertar(Alumno alumno) {
+        String consulta = "SELECT COUNT(*) FROM alumno WHERE dni = ?";
+        try (PreparedStatement stmtConsulta = conexion.prepareStatement(consulta)) {
+            stmtConsulta.setString(1, alumno.getDni());
+            ResultSet rs = stmtConsulta.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.err.println("Error: Ya existe un alumno con el mismo DNI en la colección.");
+                return;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al comprobar duplicidad de DNI: " + e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
+
         String sql = "INSERT INTO alumno (nombre, telefono, correo, dni, fechaNacimiento) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
@@ -130,7 +152,7 @@ public class Alumnos implements IAlumnos {
     public Alumno buscar(Alumno alumno) {
         String sql = "SELECT nombre, telefono, correo, dni, fechaNacimiento FROM alumno WHERE dni = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            // Ponemos el DNI que queremos buscar
+            // DNI que queremos buscar
             stmt.setString(1, alumno.getDni());
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -142,10 +164,9 @@ public class Alumnos implements IAlumnos {
                     String dni = rs.getString("dni");
                     LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
 
-                    // Creamos el objeto Alumno usando tu constructor completo
+                    // Creamos el objeto Alumno
                     return new Alumno(nombre, dni, correo, telefono, fechaNacimiento);
                 } else {
-                    // No hay alumno con ese DNI
                     return null;
                 }
             }
@@ -158,6 +179,10 @@ public class Alumnos implements IAlumnos {
 
     @Override
     public void borrar(Alumno alumno) throws OperationNotSupportedException {
+       if (alumno==null){
+           throw new NullPointerException("ERROR:El alumno introducido no puede ser nulo.");
+       }
+
         String sql = "DELETE FROM alumno WHERE dni = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setString(1, alumno.getDni());
@@ -169,7 +194,6 @@ public class Alumnos implements IAlumnos {
                 System.out.println("Alumno borrado correctamente.");
             }
         } catch (SQLException e) {
-            // Podrías lanzar otra excepción o convertirla
             throw new OperationNotSupportedException("Error al borrar alumno: " + e.getMessage());
         }
     }

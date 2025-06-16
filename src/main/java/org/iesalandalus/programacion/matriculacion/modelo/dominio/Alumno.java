@@ -370,6 +370,11 @@ public class Alumno {
             sb2.append(palabra);
         }
         almacenNombre=sb2.toString();
+
+        if (almacenNombre.length() <= 3) {
+            throw new IllegalArgumentException("ERROR: El nombre debe tener más de 3 caracteres. Es obligatorio poner nombre y apellido.");
+        }
+
         String digitosNombreNia;
 
         digitosNombreNia=almacenNombre.substring(0,4).toLowerCase().trim();
