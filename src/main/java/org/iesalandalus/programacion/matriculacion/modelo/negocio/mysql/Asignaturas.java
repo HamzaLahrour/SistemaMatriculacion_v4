@@ -16,7 +16,7 @@ public class Asignaturas implements IAsignaturas {
     private Connection conexion;
     private static Asignaturas instancia=null;
 
-    private static Asignaturas getInstancia() {
+    public static Asignaturas getInstancia() {
         if (instancia == null) {
             instancia = new Asignaturas();
         }

@@ -56,8 +56,8 @@ public class Modelo {
 
         //Metodo comenzar de cada coleccion
         alumnos.comenzar();
-        asignaturas.comenzar();
         ciclosFormativos.comenzar();
+        asignaturas.comenzar();
         matriculas.comenzar();
 
     }

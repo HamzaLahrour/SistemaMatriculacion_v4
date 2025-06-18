@@ -18,7 +18,7 @@ public class Alumnos implements IAlumnos {
     private Connection conexion;
     private static Alumnos instancia=null;
 
-    private static Alumnos getInstancia() {
+    public static Alumnos getInstancia() {
         if (instancia == null) {
             instancia = new Alumnos();
         }

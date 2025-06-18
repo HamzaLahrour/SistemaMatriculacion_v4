@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Alumnos>
+    <Alumno Dni="53709168M">
+        <Nombre>Juan</Nombre>
+        <Telefono>656908524</Telefono>
+        <Correo>jma982@hotmail.es</Correo>
+        <FechaNacimiento>24/11/1982</FechaNacimiento>
+    </Alumno>
+    <Alumno Dni="12345678Z">
+        <Nombre>Ficheroprueba</Nombre>
+        <Telefono>632147987</Telefono>
+        <Correo>ficheroPrueba22@gmail.com</Correo>
+        <FechaNacimiento>22/01/2003</FechaNacimiento>
+    </Alumno>
+</Alumnos>

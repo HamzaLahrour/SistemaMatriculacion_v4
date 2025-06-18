@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CiclosFormativos>
+    <CicloFormativo Codigo="1234">
+        <Nombre>AAA</Nombre>
+        <FamiliaProfesional>BBB</FamiliaProfesional>
+        <Horas>123</Horas>
+        <Grado Tipo="GradoD">
+            <Nombre>RRR</Nombre>
+            <NumAnios>2</NumAnios>
+            <Modalidad>Modalidad{cadenaAMostrar='PRESENCIAL'}</Modalidad>
+        </Grado>
+    </CicloFormativo>
+    <CicloFormativo Codigo="5555">
+        <Nombre>PruebaDaw</Nombre>
+        <FamiliaProfesional>PruebaFamilia</FamiliaProfesional>
+        <Horas>2000</Horas>
+        <Grado Tipo="GradoD">
+            <Nombre>PruebaSuperior</Nombre>
+            <NumAnios>2</NumAnios>
+            <Modalidad>Modalidad{cadenaAMostrar='PRESENCIAL'}</Modalidad>
+        </Grado>
+    </CicloFormativo>
+</CiclosFormativos>

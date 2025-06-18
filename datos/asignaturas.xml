@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Asignaturas>
+    <Asignatura Codigo="1234">
+        <Nombre>WWW</Nombre>
+        <Curso>Curso{cadenaAMostrar='PRIMERO'}</Curso>
+        <EspecialidadProfesorado>EspecialidadProfesorado{cadenaAMostrar='INFORMATICA'}</EspecialidadProfesorado>
+        <CicloFormativo>1234</CicloFormativo>
+        <Horas>
+            <Anuales>100</Anuales>
+            <Desdoble>5</Desdoble>
+        </Horas>
+    </Asignatura>
+    <Asignatura Codigo="4444">
+        <Nombre>ZZZ</Nombre>
+        <Curso>Curso{cadenaAMostrar='PRIMERO'}</Curso>
+        <EspecialidadProfesorado>EspecialidadProfesorado{cadenaAMostrar='INFORMATICA'}</EspecialidadProfesorado>
+        <CicloFormativo>1234</CicloFormativo>
+        <Horas>
+            <Anuales>200</Anuales>
+            <Desdoble>3</Desdoble>
+        </Horas>
+    </Asignatura>
+    <Asignatura Codigo="1124">
+        <Nombre>Programacion</Nombre>
+        <Curso>Curso{cadenaAMostrar='PRIMERO'}</Curso>
+        <EspecialidadProfesorado>EspecialidadProfesorado{cadenaAMostrar='INFORMATICA'}</EspecialidadProfesorado>
+        <CicloFormativo>1234</CicloFormativo>
+        <Horas>
+            <Anuales>300</Anuales>
+            <Desdoble>4</Desdoble>
+        </Horas>
+    </Asignatura>
+</Asignaturas>

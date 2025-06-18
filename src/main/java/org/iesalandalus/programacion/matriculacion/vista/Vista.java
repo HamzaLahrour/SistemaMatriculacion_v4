@@ -388,7 +388,7 @@ public class Vista {
         List<Matricula> matriculas = controlador.getMatriculas(alumno);
 
         if (matriculas.isEmpty()) {
-            System.out.println("El alumno con DNI " + alumno.getDni() + " existe pero todavía no está matriculado.");
+            System.out.println("El alumno con DNI " + alumno.getDni() + " todavía no está matriculado.");
         } else {
             System.out.println("Matrículas del alumno " + alumno.getDni() + ":");
             for (Matricula matricula : matriculas) {

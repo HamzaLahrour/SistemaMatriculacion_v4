@@ -1,9 +1,8 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.fichero;
 
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.*;
 
-public class FuenteDatosMySQL implements IFuenteDatos {
-
+public class FuenteDatosFichero implements IFuenteDatos {
 
     @Override
     public IAlumnos crearAlumnos() {
@@ -25,3 +24,4 @@ public class FuenteDatosMySQL implements IFuenteDatos {
         return Matriculas.getInstancia();
     }
 }
+

@@ -53,6 +53,9 @@ public class MainApp {
             case "-fdmysql":
                 System.out.println("Usando la fuente de datos: MYSQL");
                 return new Modelo(FactoriaFuenteDatos.MYSQL);
+            case "-fdfichero":
+                System.out.println("Usando la fuente de datos: FICHERO");
+                return new Modelo(FactoriaFuenteDatos.FICHERO);
 
             default:
                 throw new IllegalArgumentException("ERROR: Fuente de datos no reconocida. Usa -fdmemoria o -fdmysql.");
